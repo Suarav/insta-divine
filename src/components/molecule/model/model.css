@@ -1,0 +1,81 @@
+.fontStyle-model .modal-dialog {
+    margin-top: 100px !important;
+}
+
+.fontStyle-model .modal-body {
+    padding: 0px 3px 0px 16px;
+}
+
+.fontStyle-model .modal-title {
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+}
+
+.modal-backdrop {
+    --bs-backdrop-bg: #131520;
+    --bs-backdrop-opacity: 0.8;
+}
+
+.modal {
+    border: none !important;
+    --bs-modal-header-border-width: none !important;
+    --bs-modal-footer-border-width: none !important;
+    --bs-modal-border-radius: 6px;
+    --bs-modal-inner-border-radius: calc(0.5rem - 1px);
+}
+
+.fontStyle-section-input .form-control {
+    padding: 14px 12px 14px 12px;
+    border-radius: 12px;
+    background-color: #efefef;
+}
+
+.fontStyle-section-input .form-control:focus {
+    color: #212529;
+    border-radius: 12px;
+    border: none;
+    background-color: #efefef;
+    outline: 0;
+    box-shadow: none;
+}
+
+.fontStyle-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+
+}
+
+.fontStyle-name {
+    padding: 10px 20px;
+    margin-right: 20px;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.fontStyle-name:hover {
+    background-color: #efefef;
+}
+
+.fontStyle-model-scroll {
+    max-height: 400px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.fontStyle-model-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 124px;
+}
+
+.fontStyle-model-scroll::-webkit-scrollbar-thumb {
+    background: #a7a7a7;
+    border-radius: 6px;
+}
+
+.Modern-fontStyle-title {
+    padding-top: 20px;
+    border-top: 1px solid #dfdfdf;
+    margin-right: 24px;
+}

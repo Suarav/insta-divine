@@ -1,0 +1,767 @@
+.profile-containt {
+    background-color: #efefef;
+}
+
+.profile-container {
+    max-width: 1270px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px 16px;
+}
+
+.profile-horoscope-categories .title,
+.profile-section .title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
+    line-height: 20px;
+}
+
+.profile-horoscope-categories .sub-title {
+    font-weight: 400;
+    font-size: 12px;
+    color: #000000;
+    line-height: 20px;
+}
+
+.profile-horoscope-categories .checkbox {
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+    line-height: 20px;
+}
+
+.profile-horoscope-categories .buttons-group {
+    padding-top: 40px;
+    padding-right: 95px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttons-group .save-as-template-button,
+.btn-remove {
+    padding: 12px 16px 12px 16px;
+    border-radius: 30px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+    background-color: #d9d9d9;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.buttons-group .save-as-template-button:hover,
+.btn-remove:hover {
+    background-color: #cdcdcd;
+}
+
+.btn-remove,
+.save-as-template-button {
+    padding: 12px 26px 12px 26px;
+}
+
+.buttons-group .export-button,
+.btn-Pick-an-image {
+    padding: 12px 60px 12px 60px;
+    border-radius: 30px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #6052be;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-Pick-an-image {
+    position: relative;
+}
+
+.buttons-group .export-button:hover {
+    background-color: #5749ae;
+}
+
+/* profile-section */
+.profile-inner-description,
+.Background-inner-description,
+.Zodiac-Style-inner-description,
+.Category-Button-Style-description,
+.font-Style-description {
+    background-color: #ffffff;
+    padding: 25px 35px 25px 35px;
+    border-radius: 16px;
+}
+
+/* avatar */
+.avatar-upload {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    width: 130px;
+    height: 130px;
+    z-index: 2;
+    border: none !important;
+}
+
+.btn-Pick-upload {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    bottom: 0;
+    right: 0;
+    border: none !important;
+}
+
+.editprofile-avatar {
+    margin-right: 16px;
+    /* cursor: pointer; */
+}
+
+.profile-avtar-circle {
+    width: 130px;
+    height: 130px;
+    /* min-width: 90px; */
+    background-color: #efefef;
+    position: relative;
+}
+
+.uploaded-img {
+    width: 130px;
+    height: 130px;
+}
+
+.camera-img {
+    position: absolute;
+    margin: -10px;
+    width: 70px;
+}
+
+.upload-image-icon {
+    width: 48px;
+    height: 48px;
+    opacity: 1;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bottom-section {
+    border-right: 1.5px solid #d9d9d9;
+    padding-right: 95px;
+    padding-bottom: 30px;
+}
+
+.profile-section-button-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 0px 40px 0px 40px;
+}
+
+.profile-section-input .form-control {
+    padding: 14px 12px 14px 12px;
+    border-radius: 12px;
+    background-color: #d9d9d9;
+}
+
+.profile-section-input .form-control:focus {
+    color: #212529;
+    background-color: #d9d9d9;
+    border-color: #d9d9d9;
+    outline: 0;
+    box-shadow: none;
+}
+
+/* Background-section  */
+.Background-section,
+.Zodiac-Style-section,
+.Category-Button-Style-section,
+.font-Style-section {
+    padding-top: 55px;
+}
+
+.Background-inner-description {
+    padding: 40px 30px 40px 30px;
+}
+
+.Background-image {
+    min-height: 12rem;
+    height: 100%;
+    /* max-width: 9.5rem; */
+    width: 100%;
+    border: 2px solid #000000;
+    border-radius: 16px
+}
+
+.Background-inner-description .checkbox-tile,
+.Category-Button-Style-description .checkbox-tile {
+    border: none;
+}
+
+.Background-inner-description .checkbox-tile::before {
+    bottom: 0.45rem;
+    right: 0.45rem;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background-color: #efefef;
+    z-index: 1;
+}
+
+.Zodiac-Style-div {
+    padding: 20px;
+    border: 1px solid #d9d9d9;
+    border-radius: 12px;
+    /* min-width: 16.67%;
+    width: 100%; */
+    /* margin-left: 16px; */
+}
+
+.Zodiac-Style-inner-description {
+    justify-content: space-between;
+}
+
+.Zodiac-Style-div:first-child,
+.Category-Button-Style-description .square:first-child {
+    margin-left: 0px;
+}
+
+/*     Category-Button-Style  */
+.square-fill {
+    background-color: #000000;
+    padding: 20px
+}
+
+/* .square:focus {
+    background-color: red;
+} */
+
+.square-rounded {
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.square-full-rounded {
+    background-color: #000000;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.Category-Button-Style-description .Outline-title,
+.hardShadow-title {
+    padding-top: 20px;
+}
+
+.Spacial-Upgrade-title,
+.softShadow-title {
+    padding-top: 25px;
+}
+
+.square-border {
+    border: 1px solid #000000;
+    padding: 20px;
+}
+
+.square-rounded-border {
+    border: 1px solid #000000;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.square-full-rounded-border {
+    border: 1px solid #000000;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.Category-Button-Style-description .square {
+    max-width: 33.33%;
+    width: 100%;
+    margin-left: 24px;
+}
+
+.square-full-outline {
+    padding: 10px;
+    border: 2px solid #dedede;
+    border-radius: 10px;
+}
+
+.square-hardShadow {
+    box-shadow: 6px 6px;
+    border: 1px solid #000000;
+    padding: 20px;
+}
+
+.square-rounded-hardShadow {
+    box-shadow: 6px 6px;
+    border: 1px solid #000000;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.square-full-rounded-hardShadow {
+    box-shadow: 6px 6px;
+    border: 1px solid #000000;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.square-SoftShadow {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    /* border: 1px solid #000000; */
+    padding: 20px;
+}
+
+.square-rounded-SoftShadow {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+.square-full-rounded-SoftShadow {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    padding: 20px;
+    border-radius: 25px;
+}
+
+.Spacial-Upgrade {
+    padding: 4px 10px 4px 10px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+/* card checkbox */
+.checkbox-input {
+    opacity: 0;
+    visibility: hidden;
+    margin: 0;
+    position: absolute;
+}
+
+/* Checkbox display */
+.checkbox-input:checked+.checkbox-tile::before {
+    transform: scale(1);
+    opacity: 1;
+    background-color: var(--primary-color);
+    background-color: var(--primary-color);
+}
+
+/* Checkbox icon and text */
+.checkbox-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* gap: 0.2rem;
+    width: 160px;
+    height: 70px; */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: 0.1s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox-tile:hover {
+    border-color: #999;
+}
+
+/* Checkmark (icon inside checker) */
+.checkbox-tile::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    background-color: #fff;
+    border-radius: 50%;
+    bottom: 0.25rem;
+    right: 0.25rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: 0.25s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23FFFFFF' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' fill='none'%3E%3C/rect%3E%3Cpolyline points='216 72.005 104 184 48 128.005' fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'%3E%3C/polyline%3E%3C/svg%3E");
+    border: 2px solid var(--primary-color);
+    background-size: 12px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    --primary-color: #56c056;
+}
+
+/* color-picker */
+.color-picker-box,
+.Categorycolor-picker-box,
+.Fontcolor-picker-box {
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #212529;
+    width: 20px;
+}
+
+.color-picker-label-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: #2a2a2a;
+}
+
+.cusotom-color-picker {
+    align-items: center;
+}
+
+.color-input-feild {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.color-picker-detail #colorCode {
+    line-height: 17px;
+}
+
+.color-picker-detail {
+    max-width: 200px;
+    width: 100%;
+    margin-left: 16px;
+    padding: 6px 14px 6px 14px;
+    background-color: #efefef;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* font-style */
+.font-Style-description {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2a2a2a;
+}
+
+/* redio */
+
+
+.Category-Button-Style-description .checkbox {
+    max-width: 30%;
+    width: 100%;
+}
+
+.Category-Button-Style-description .checkbox-wrapper {
+    min-width: 30%;
+    width: 100%;
+}
+
+.Category-Button-Style-description .square {
+    max-width: 100%;
+}
+
+/* font-style */
+.fontStyle-picker {
+    /* border: 1px solid #000000; */
+    margin-right: 150px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.font-box {
+    padding: 10px;
+    background-color: #f3f1f1;
+    border-radius: 6px;
+}
+
+/* mobile design */
+
+.Mobile-section {
+    height: 100vh;
+}
+
+.preview-wrap {
+    max-width: 350px;
+    height: 600px;
+    position: fixed;
+    top: 15%;
+    bottom: 0;
+    border: 9px solid #000000;
+    border-radius: 50px;
+    background-color: #d9d9d9;
+    /* padding: 0px 16px; */
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.mobile-profile-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: #efefef;
+    position: relative;
+    margin: 0px auto 0px auto;
+}
+
+.mobile-profile-img {
+    border-radius: 40px;
+}
+
+.useName-profile-letter {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.profile-useName {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+}
+
+.profile-ZodiacName {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+}
+
+.Horoscope-Categories {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 6px 16px;
+    max-width: max-content;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.Horoscope-Categories-description {
+    font-size: 12px;
+    color: #000000;
+    /* width: 275px; */
+    max-height: 123px;
+    /* height: 100%; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Mobile-preview-scroll {
+    /* max-height: 644px; */
+    height: 100%;
+    padding: 20px 16px 26px 16px;
+    /* overflow-y: scroll; */
+}
+
+.Mobile-preview-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+
+.Mobile-preview-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+    opacity: 0;
+    border-radius: 6px;
+}
+
+.avatar-uploaded-img {
+    border-radius: 100px;
+}
+
+.Zodiac-Style-inner-description .checkbox {
+    /* max-width: 31.33%;
+    width: 100%; */
+    /* margin-right: 16px; */
+}
+
+.Zodiac-Style-section .checkbox-wrapper {
+    width: 100%;
+}
+
+.Zodiac-Style-inner-description .checkbox:last-child {
+    margin-right: 0px;
+}
+
+.preview-button-div,
+.preview-close-btn {
+    display: none;
+}
+
+.preview-design-div {
+    display: block;
+}
+
+.Background-inner-description .checkbox {
+    /* max-width: 23%;
+    width: 100%; */
+}
+
+.showMore-background-btn {
+    padding: 10px 16px;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+    cursor: pointer;
+}
+
+/* media */
+@media screen and (max-width:600px) {
+    .Background-inner-description .checkbox {
+        /* max-width: 48%;
+        width: 100%; */
+    }
+
+    .Zodiac-Style-inner-description .checkbox {
+        /* max-width: 48%;
+        width: 100%; */
+    }
+}
+
+.preview-componentRef-div {
+    border-radius: 40px;
+}
+
+@media screen and (max-width:991px) {
+    .Mobile-section {
+        position: relative;
+    }
+
+    .preview-componentRef-div {
+        border-radius: 0px;
+    }
+
+    .preview-close-btn .close-btn {
+        padding: 6px 10px;
+        background-color: #cdcdcd;
+        border-radius: 10px;
+    }
+
+    .preview-close-btn {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+        width: calc(100% - 32px);
+        /* margin-right: 16px; */
+        position: absolute;
+    }
+
+    .preview-wrap {
+        top: 0;
+        bottom: 0px;
+        max-width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        transition: all 1s linear;
+        z-index: 20;
+    }
+
+    .preview-design-div {
+        display: none;
+        opacity: 0;
+    }
+
+    .preview-mobile-design-div {
+        display: block;
+        transition: all 1s linear;
+        padding: 0px !important;
+    }
+
+    .bottom-section {
+        padding-right: 0px;
+        border-right: unset;
+    }
+
+    .profile-horoscope-categories .buttons-group {
+        padding-right: 0px;
+    }
+
+    .profile-inner-description,
+    .Background-inner-description,
+    .Zodiac-Style-inner-description,
+    .Category-Button-Style-description,
+    .font-Style-description {
+        padding: 16px;
+    }
+
+    .preview-button-div {
+        display: block;
+    }
+
+    .preview-button {
+        background-color: #d9d9d9;
+        border-radius: 44px;
+        border: 0;
+        box-shadow: 0 6px 12px #0a0b0d14;
+        padding: 14px 24px;
+        transition: width .2s, padding .2s;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+        color: #000;
+        text-align: center;
+    }
+
+    .preview-button-div {
+        position: fixed;
+        bottom: 30px;
+        right: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+/* ------------ */
+label.cabinet {
+    display: block;
+    cursor: pointer;
+}
+
+label.cabinet input.file {
+    position: relative;
+    height: 100%;
+    width: auto;
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    margin-top: -30px;
+}
+
+#upload-demo {
+    width: 250px;
+    height: 250px;
+    padding-bottom: 25px;
+}
+
+figure figcaption {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    padding-left: 9px;
+    padding-bottom: 5px;
+    text-shadow: 0 0 10px #000;
+}
+
+@media screen and (max-width:1210.99px) and (min-width:991.99px) {
+    .preview-wrap {
+        max-width: 296px;
+        height: 581px;
+    }
+
+}
