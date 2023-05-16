@@ -5,7 +5,7 @@ const InputCheckbox = (props) => {
     return (
         <>
             <label className="container-checkbox" style={{ display: props.checkBoxType == "category" ? "block" : "none" }}>
-                <input type="checkbox" ref={props.referance} onClick={props.onClick} className={props.className} value={props.value} name={props.checkBoxName} />
+                <input type="checkbox" onChange={(e)=>console.log("e:::::")} className={props.className} value={props.value} name={props.checkBoxName} />
                 <span className="checkmark"></span>
                 {props.label}
             </label>
