@@ -12,11 +12,9 @@ import { Button } from "react-bootstrap";
 import * as htmlToImage from 'html-to-image';
 import apiService from "../services/apiService";
 import axios from "axios";
-import moment from 'moment'
-const currentDate = moment().format('YYYY-MM-DD');
-
-
+import moment from 'moment';
 import _default from "react-bootstrap/esm/NavDropdown";
+const currentDate = moment().format('YYYY-MM-DD');
 
 const Profile = () => {
     const componentRef = useRef(null);
@@ -46,6 +44,8 @@ const Profile = () => {
     const [showOtherRow, setShowOtherRow] = useState(false);
     const [isBackgroundImage, setIsBackGroundImage] = useState([]);
     const [zodiacName, setZodiacName] = useState('');
+    const [cat1,setCat1]=useState("");
+    const [cat2,setCat2]=useState("");
 
 
     const handleClick = (e) => {
@@ -296,8 +296,8 @@ const Profile = () => {
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
             const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
-       
-            // console.log("componentRef.current:::",componentRef.current)
+            setCat1(res.data.data.prediction.personal)
+            setCat2(res.data.data.prediction.emotions)
             const image = await htmlToImage.toPng(componentRef.current);
             download(image,`${ZodiacKey[i]}-${currentDate}`);
         }
@@ -885,7 +885,8 @@ const Profile = () => {
                                                 Personal Life
                                             </div>
                                             <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+                                                {cat1!="" ? cat1 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy." }
+                                                
                                             </div>
                                             <div className="Horoscope-Categories mt-4 mb-2" style={{
                                                 backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
@@ -897,7 +898,8 @@ const Profile = () => {
                                                 Emotions
                                             </div>
                                             <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+                                                {cat2!=""? cat2 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
+                                               
                                             </div>
                                         </div>
                                     </div>
