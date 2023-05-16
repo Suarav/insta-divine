@@ -15,7 +15,7 @@ import axios from "axios";
 import moment from 'moment'
 const currentDate = moment().format('YYYY-MM-DD');
 
-import Cookies from 'js-cookie';
+
 import _default from "react-bootstrap/esm/NavDropdown";
 
 const Profile = () => {
