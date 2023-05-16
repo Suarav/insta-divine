@@ -50,9 +50,10 @@ const Profile = () => {
 
 
     const handleCheckbox = (e) => {
+        console.log(checked, value)
         const value= e.target.value;
         const checked= e.target.checked;
-        console.log(checked, value)
+
         
     }
 
@@ -299,7 +300,7 @@ const Profile = () => {
             console.log("ZodiacKey", ZodiacKey[i]);
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
-            const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+            const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
             setCat1(res.data.data.prediction.personal)
             setCat2(res.data.data.prediction.emotions)
             const image = await htmlToImage.toPng(componentRef.current);
