@@ -266,9 +266,9 @@ const Profile = () => {
         //   month: '2-digit',
         //   day: '2-digit'
         // }).replace(/\//g, '-');
-
+        
         let formData = new FormData();
-        formData.append('api_key', "2b8a61594b1f4c4db0902a8a395ced93");
+        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
         formData.append('timezone', "5.5");
         const zodiacSigns = [
