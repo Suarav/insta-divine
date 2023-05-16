@@ -48,8 +48,12 @@ const Profile = () => {
     const [cat2,setCat2]=useState("");
 
 
-    const handleClick = (e) => {
-        console.log("e::::", e)
+
+    const handleCheckbox = (e) => {
+        const value= e.target.value;
+        const checked= e.target.checked;
+        console.log(checked, value)
+        
     }
 
     const setCanvasImage = (image, canvas, crop) => {
@@ -337,7 +341,8 @@ const Profile = () => {
                                                     label="Personal Life"
                                                     value="Personal Life"
                                                     checkBoxType="category"
-                                                    onChange={handleClick}
+                                                    checked="true"
+                                                    onChange={handleCheckbox}
                                                 />
                                             </div>
                                             <div className="d-flex align-items-center pe-2">
@@ -346,7 +351,7 @@ const Profile = () => {
                                                     className="categoryCheckbox"
                                                     label="Health"
                                                     checkBoxType="category"
-                                                    onChange={handleClick}
+                                                    // onChange={handleClick}
 
                                                 />
                                             </div>

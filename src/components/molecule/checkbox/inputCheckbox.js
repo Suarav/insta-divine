@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import '../checkbox/inputCheckbox.css'
-const InputCheckbox = (props) => {
+const 
+
+InputCheckbox = (props) => {
     useEffect(() => { }, [props])
     return (
         <>
             <label className="container-checkbox" style={{ display: props.checkBoxType == "category" ? "block" : "none" }}>
-                <input type="checkbox" onChange={(e)=>console.log("e:::::")} className={props.className} value={props.value} name={props.checkBoxName} />
+                <input type="checkbox" onChange={props.onChange} className={props.className} value={props.value} name={props.checkBoxName} />
                 <span className="checkmark"></span>
                 {props.label}
             </label>
