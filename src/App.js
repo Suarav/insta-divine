@@ -15,7 +15,7 @@ function App() {
       Cookies.set('api_key', res.api_key)
     }
     else{
-      // window.location = "https://dev.divineapi.com/"
+      window.location = "https://dev.divineapi.com/"
     }
   }
   useEffect(()=>{

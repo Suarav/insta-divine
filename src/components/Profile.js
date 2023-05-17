@@ -14,6 +14,9 @@ import apiService from "../services/apiService";
 import axios from "axios";
 import moment from 'moment';
 import _default from "react-bootstrap/esm/NavDropdown";
+import Cookies from 'js-cookie';
+
+
 const currentDate = moment().format('YYYY-MM-DD');
 
 const categories = [{name:"Personal Life",value:"personal"},
@@ -291,7 +294,7 @@ const Profile = () => {
         // }).replace(/\//g, '-');
 
         let formData = new FormData();
-        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        formData.append('api_key', Cookies.get('api_key'));
         formData.append('date', currentDate);
         formData.append('timezone', "5.5");
         const zodiacSigns = [
@@ -316,7 +319,8 @@ const Profile = () => {
 
 
         setIsLoading(true)
-        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px"
+        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px";
+
         for (let i = 0; i < 12; i++) {
 
             const ZodiacKey = zodiacSigns;
