@@ -187,7 +187,9 @@ const Profile = () => {
     const inputRef = useRef(null);
     const handleCategoryCheckbox = (data) => {
         // const inputValue = inputRef.current?.value;
+        const value=data.target?.value
         setBackgroungImage(data)
+        console.log("checkbox+++++++++",value);
     };
 
     const getMedia = async () => {
@@ -285,31 +287,25 @@ const Profile = () => {
     // download image
     const handleExportImage = async () => {
 
-        // const currentDate = new Date();
-
-        // const formattedDate = currentDate.toLocaleDateString('en-GB', {
-        //   year: 'numeric',
-        //   month: '2-digit',
-        //   day: '2-digit'
-        // }).replace(/\//g, '-');
 
         let formData = new FormData();
         formData.append('api_key', Cookies.get('api_key'));
+        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
         formData.append('timezone', "5.5");
         const zodiacSigns = [
-            "ARIES",
-            "TAURUS",
-            "GEMINI",
-            "CANCER",
-            "LEO",
-            "VIRGO",
-            "LIBRA",
-            "SCORPIO",
-            "SAGITTARIUS",
-            "CAPRICORN",
-            "AQUARIUS",
-            "PISCES"
+            "Aries",
+            "Taurus",
+            "Gemini",
+            "Cancer",
+            "Leo",
+            "Virgo",
+            "Libra",
+            "Scorpio",
+            "Sagittarius",
+            "Capricorn",
+            "Aquarius",
+             "Pisces"
         ];
         const headers = {
             'Content-Type': 'multipart/form-data',
@@ -320,7 +316,9 @@ const Profile = () => {
 
         setIsLoading(true)
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px";
-
+      
+            setIsmobilePreview("preview-mobile-design-div")
+            setIsLoading(true)
         for (let i = 0; i < 12; i++) {
 
             const ZodiacKey = zodiacSigns;
@@ -335,6 +333,7 @@ const Profile = () => {
             const image = await htmlToImage.toPng(componentRef.current);
             download(image, `${ZodiacKey[i]}-${currentDate}`);
         }
+        setIsmobilePreview("preview-design-div")
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
         setIsLoading(false)
 
@@ -929,7 +928,7 @@ const Profile = () => {
                                         </p> */}
                                             </div>
                                             <div className="profile-useName mt-1">{profileTitle}</div>
-                                            <div className="profile-ZodiacName d-flex align-items-center justify-content-center my-3">
+                                            <div className="profile-ZodiacName  d-flex align-items-center justify-content-center my-3">
                                                 <img src={zodiacImage} width="40px" height="40px" />
                                                 <span className="ps-2" style={{ color: fontColor, fontFamily: fontFamaily }}>{zodiacName}</span>
                                             </div>
