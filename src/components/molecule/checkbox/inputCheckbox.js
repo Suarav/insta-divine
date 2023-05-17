@@ -7,7 +7,7 @@ InputCheckbox = (props) => {
     return (
         <>
             <label className="container-checkbox" style={{ display: props.checkBoxType == "category" ? "block" : "none" }}>
-                <input type="checkbox" onChange={props.onChange} className={props.className} value={props.value} name={props.checkBoxName} />
+                <input type="checkbox" onClick={props.onChange} className={props.className} value={props.value} name={props.checkBoxName} checked={props.checked} />
                 <span className="checkmark"></span>
                 {props.label}
             </label>

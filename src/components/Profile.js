@@ -16,6 +16,16 @@ import moment from 'moment';
 import _default from "react-bootstrap/esm/NavDropdown";
 const currentDate = moment().format('YYYY-MM-DD');
 
+const categories = [{name:"Personal Life",value:"personal"},
+{name:"Health",value:"health"},
+{name:"Profession",value:"profession"},
+{name:"Emotions",value:"emotions"},
+{name:"Travel",value:"travel"},
+{name:"Luck",value:"luck"},
+];
+
+
+
 const Profile = () => {
     const componentRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -44,17 +54,29 @@ const Profile = () => {
     const [showOtherRow, setShowOtherRow] = useState(false);
     const [isBackgroundImage, setIsBackGroundImage] = useState([]);
     const [zodiacName, setZodiacName] = useState('');
-    const [cat1,setCat1]=useState("");
-    const [cat2,setCat2]=useState("");
+    const [cat1, setCat1] = useState("");
+    const [cat2, setCat2] = useState("");
+    const [isLoading,setIsLoading] = useState(false);
+    const [selectedCategories, setSelectedCategories] = useState(["personal","health"]);
+  
+
 
 
 
     const handleCheckbox = (e) => {
-        console.log(checked, value)
-        const value= e.target.value;
-        const checked= e.target.checked;
+        const {value,checked} = e.target;
+        console.log(value, checked);
 
-        
+        if (checked) {
+            if (selectedCategories.length === 2) {
+                e.preventDefault();
+            } else {
+                setSelectedCategories([...selectedCategories,value])
+            }
+        } else {
+            setSelectedCategories(selectedCategories.filter(category => category !== value))
+        }
+
     }
 
     const setCanvasImage = (image, canvas, crop) => {
@@ -267,7 +289,7 @@ const Profile = () => {
         //   month: '2-digit',
         //   day: '2-digit'
         // }).replace(/\//g, '-');
-        
+
         let formData = new FormData();
         formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
@@ -285,15 +307,16 @@ const Profile = () => {
             "CAPRICORN",
             "AQUARIUS",
             "PISCES"
-          ];
+        ];
         const headers = {
             'Content-Type': 'multipart/form-data',
             "Accept": "application/json"
         }
         //  const currentDate = new Date().toLocaleDateString('en-CA');
-        
 
-        
+
+        setIsLoading(true)
+        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px"
         for (let i = 0; i < 12; i++) {
 
             const ZodiacKey = zodiacSigns;
@@ -301,11 +324,16 @@ const Profile = () => {
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
             const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
-            setCat1(res.data.data.prediction.personal)
-            setCat2(res.data.data.prediction.emotions)
+
+            setCat1(res.data.data.prediction[selectedCategories[0]])
+            setCat2(res.data.data.prediction[selectedCategories[1]])
+
             const image = await htmlToImage.toPng(componentRef.current);
-            download(image,`${ZodiacKey[i]}-${currentDate}`);
+            download(image, `${ZodiacKey[i]}-${currentDate}`);
         }
+        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
+        setIsLoading(false)
+
 
 
     }
@@ -322,6 +350,12 @@ const Profile = () => {
     return (
         <>
             <div className="section">
+                {
+                    isLoading && <div className="loader">
+                    Loading...
+                </div>
+                }
+                
                 <div className="profile-container">
                     <div className="row profile-left-container">
                         <div className="col-lg-8 col-md-12 col-sm-12">
@@ -336,23 +370,28 @@ const Profile = () => {
                                         </div>
                                         {/* checkbox */}
                                         <div className="checkbox d-flex flex-wrap">
-                                            <div className="d-flex align-items-center pe-2" >
+
+                                            {
+                                                categories.map(category => <div className="d-flex align-items-center pe-2" >
                                                 <InputCheckbox
                                                     className="categoryCheckbox"
-                                                    label="Personal Life"
-                                                    value="Personal Life"
+                                                    label={category.name}
+                                                    value={category.value}
                                                     checkBoxType="category"
-                                                    checked="true"
+                                                    checked={selectedCategories.includes(category.value)}
                                                     onChange={handleCheckbox}
                                                 />
-                                            </div>
+                                            </div>)
+                                            }
+{/*                                             
                                             <div className="d-flex align-items-center pe-2">
                                                 <InputCheckbox
-                                                    value="Health"
+                                                    value="health"
                                                     className="categoryCheckbox"
                                                     label="Health"
                                                     checkBoxType="category"
-                                                    // onChange={handleClick}
+                                                    checked={selectedCategories.includes("health")}
+                                                    onChange={handleCheckbox}
 
                                                 />
                                             </div>
@@ -361,7 +400,9 @@ const Profile = () => {
                                                     defaultValue="Profession"
                                                     className="categoryCheckbox"
                                                     label="Profession"
+                                                    value="profession"
                                                     checkBoxType="category"
+                                                    onChange={handleCheckbox}
                                                 />
                                             </div>
                                             <div className="d-flex align-items-center pe-2">
@@ -369,7 +410,9 @@ const Profile = () => {
                                                     defaultValue="Emotions"
                                                     className="categoryCheckbox"
                                                     label="Emotions"
+                                                    value="emotions"
                                                     checkBoxType="category"
+                                                    onChange={handleCheckbox}
                                                 />
                                             </div>
                                             <div className="d-flex align-items-center pe-2">
@@ -377,7 +420,9 @@ const Profile = () => {
                                                     defaultValue="Travel"
                                                     className="categoryCheckbox"
                                                     label="Travel"
+                                                    value="travel"
                                                     checkBoxType="category"
+                                                    onChange={handleCheckbox}
                                                 />
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -386,10 +431,12 @@ const Profile = () => {
                                                     defaultValue="Luck"
                                                     className="categoryCheckbox"
                                                     label="Luck"
+                                                    value="luck"
                                                     checkBoxType="category"
+                                                    onChange={handleCheckbox}
 
                                                 />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </label>
 
@@ -455,7 +502,8 @@ const Profile = () => {
 
                                                 </div>
                                                 <div className="profile-section-input pt-5">
-                                                    <input type="text" onChange={(e) => setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
+                                                    <input type="text" onChange={(e) =>
+                                                        setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
                                                 </div>
                                             </div>
                                         </div>
@@ -881,6 +929,18 @@ const Profile = () => {
                                                 <img src={zodiacImage} width="40px" height="40px" />
                                                 <span className="ps-2" style={{ color: fontColor, fontFamily: fontFamaily }}>{zodiacName}</span>
                                             </div>
+                                            <div className="Horoscope-Categories  mt-4 mb-2" style={{
+                                                backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
+                                                border: handleButtonOutLines(),
+                                                boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
+                                                fontFamily: fontFamaily,
+                                                borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
+                                            }}>
+                                                {categories.find(category => category.value === selectedCategories[0])?.name}
+                                            </div>
+                                            <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
+                                                {cat1 != "" ? cat1 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
+                                            </div>
                                             <div className="Horoscope-Categories mt-4 mb-2" style={{
                                                 backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
                                                 border: handleButtonOutLines(),
@@ -888,24 +948,10 @@ const Profile = () => {
                                                 fontFamily: fontFamaily,
                                                 borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
                                             }}>
-                                                Personal Life
+                                                {categories.find(category => category.value === selectedCategories[1])?.name}
                                             </div>
                                             <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                {cat1!="" ? cat1 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy." }
-                                                
-                                            </div>
-                                            <div className="Horoscope-Categories mt-4 mb-2" style={{
-                                                backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
-                                                border: handleButtonOutLines(),
-                                                boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
-                                                fontFamily: fontFamaily,
-                                                borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
-                                            }}>
-                                                Emotions
-                                            </div>
-                                            <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                {cat2!=""? cat2 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
-                                               
+                                                {cat2 != "" ? cat2 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
                                             </div>
                                         </div>
                                     </div>
