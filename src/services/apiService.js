@@ -28,23 +28,49 @@ class ApiService {
         }
     }
 
-    async authApiUser(data){
+    async authApiUser(data) {
         const body = {
-            id : data
+            id: data
         }
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/auth-api-user`, body ,headers)
+        const res = await this.POST(`/admin/api/v1/auth-api-user`, body, headers)
         return res.data
     }
 
-    async getMedia(){
+    async getMedia() {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.GET(`/admin/api/v1/getMedia`, {} , headers)
+        const res = await this.GET(`/admin/api/v1/getMedia`, {}, headers)
         return res.data.data
+    }
+
+    async saveInstaTemplet(body) {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        const res = await this.POST(`/admin/api/v1/store-insta-saved-template`, body, headers)
+        return res.data
+    }
+    async getTemplet() {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        const res = await this.GET(`/admin/api/v1/list`, {}, headers)
+        return res.data.data
+    }
+    async getTempletData(data) {
+        const body = {
+            id: data
+        }
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+
+        const res = await this.POST(`/admin/api/v1/get`, body, headers)
+        return res.data.data[0]
     }
 
 

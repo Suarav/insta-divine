@@ -14,7 +14,9 @@ InputCheckbox = (props) => {
 
             <div className="checkbox" style={{ display: props.checkBoxType == "Zodiac" ? "block" : "none" }}>
                 <label className="checkbox-wrapper">
-                    <input type="checkbox" onClick={props.onClick} className={props.className} value={props.value} name={props.checkBoxName} />
+                    <input type="checkbox" onClick={props.onClick} className={props.className} value={props.value} name={props.checkBoxName} 
+                      checked={props.checked1} 
+                    />
                     {props.addSpan}
                 </label>
             </div>

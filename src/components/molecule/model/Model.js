@@ -6,8 +6,6 @@ const Model = (props) => {
     const handleFontFamaily = (data) => {
         props.showModel(data)
     }
-
-
     return (
         <>
             <Modal show={props.isModel} onHide={props.hideModel} className={props.className}>

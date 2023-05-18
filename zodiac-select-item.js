@@ -1,0 +1,4 @@
+ 
+ const zodiacSelectItem={
+ buttonColor:"categoryBtnColor",
+}

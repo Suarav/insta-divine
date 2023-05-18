@@ -14,17 +14,19 @@ import apiService from "../services/apiService";
 import axios from "axios";
 import moment from 'moment';
 import _default from "react-bootstrap/esm/NavDropdown";
+
 import Cookies from 'js-cookie';
+import SaveTempletModel from "./molecule/model/SaveTempletModel";
 
 
 const currentDate = moment().format('YYYY-MM-DD');
 
-const categories = [{name:"Personal Life",value:"personal"},
-{name:"Health",value:"health"},
-{name:"Profession",value:"profession"},
-{name:"Emotions",value:"emotions"},
-{name:"Travel",value:"travel"},
-{name:"Luck",value:"luck"},
+const categories = [{ name: "Personal Life", value: "personal" },
+{ name: "Health", value: "health" },
+{ name: "Profession", value: "profession" },
+{ name: "Emotions", value: "emotions" },
+{ name: "Travel", value: "travel" },
+{ name: "Luck", value: "luck" },
 ];
 
 
@@ -36,8 +38,8 @@ const Profile = () => {
         unit: '%',
         x: 25,
         y: 25,
-        width: 40,
-        height: 80,
+        width: 100,
+        height: 100,
     })
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
@@ -59,22 +61,87 @@ const Profile = () => {
     const [zodiacName, setZodiacName] = useState('');
     const [cat1, setCat1] = useState("");
     const [cat2, setCat2] = useState("");
-    const [isLoading,setIsLoading] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState(["personal","health"]);
-  
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedCategories, setSelectedCategories] = useState(["personal", "health"]);
+    const [selectImage, setSelectImage] = useState([]);
+    const [isDropDown, setIsdropDown] = useState(false)
+    const [allTemplet, setAllTemplet] = useState([])
+    const [selectedTemplateData, setselectedTemplateData] = useState({});
+    const [isSaveModel, setIsSaveModel] = useState(false)
+    const [templetName, setTempletName] = useState("");
+    const [saveAsTemplateName, setSaveAsTemplateName] = useState("Save as template");
 
+    // add templet
+    // console.log("base64String:::", base64String)
+    const handleTemplate = async () => {
 
+        const TemplateData = {
+            category: selectedCategories,
+            title: profileTitle,
+            background: backgroundImage,
+            style: "",
+            profileImage: base64String,
+            catButtonStyle: btnStyle,
+            catButtonColor: categoryBtnColor,
+            catButtonFontColor: categoryBtnFontColor,
+            fontStyle: fontFamaily,
+            fontColor: fontColor,
+        }
+        const dataBody = {
+            api_key: "6f4922f45568161a8cdf4ad2299f6d23",
+            name: templetName,
+            config: JSON.stringify(TemplateData)
+        }
+        const res = await apiService.saveInstaTemplet(dataBody)
+        if (res) {
+            HideSavePopup()
+        }
+        setselectedTemplateData(TemplateData)
+        // alert(JSON.stringify(TemplateData))
+    }
+    const ShowSavePopup = () => {
+        setIsSaveModel(true)
+    }
+    // close SaveModel
+    const HideSavePopup = () => {
+        setIsSaveModel(false)
+    }
+    // drop down
+    const handleSaveTempleteDropDown = async () => {
+        if (isDropDown) {
+            setIsdropDown(false)
+        } else {
+            setIsdropDown(true)
+        }
+        const res = await apiService.getTemplet()
+        setAllTemplet(res)
 
+    }
+    // handleTemplete
+    const handleTempleteDesign = async (id, name) => {
+        const res = await apiService.getTempletData(id)
+        setSelectedCategories(JSON.parse(res.config).category)
+        setProfileTitle(JSON.parse(res.config).title)
+        setBackgroungImage(JSON.parse(res.config).background)
+        setBtnStyle(JSON.parse(res.config).catButtonStyle)
+        setCategoryBtnColor(JSON.parse(res.config).catButtonColor)
+        setCategoryBtnFontColor(JSON.parse(res.config).catButtonFontColor)
+        setFontFamaily(JSON.parse(res.config).fontStyle)
+        setFontColorCode(JSON.parse(res.config).fontCol)
+        setSaveAsTemplateName(name)
+        setIsdropDown(false)
+
+    }
 
     const handleCheckbox = (e) => {
-        const {value,checked} = e.target;
+        const { value, checked } = e.target;
         console.log(value, checked);
 
         if (checked) {
             if (selectedCategories.length === 2) {
                 e.preventDefault();
             } else {
-                setSelectedCategories([...selectedCategories,value])
+                setSelectedCategories([...selectedCategories, value])
             }
         } else {
             setSelectedCategories(selectedCategories.filter(category => category !== value))
@@ -185,11 +252,22 @@ const Profile = () => {
 
     // background
     const inputRef = useRef(null);
-    const handleCategoryCheckbox = (data) => {
+    const handleCategoryCheckbox = (e, data) => {
         // const inputValue = inputRef.current?.value;
-        const value=data.target?.value
+        const { value, checked } = e.target;
+
+        if (checked) {
+            if (selectImage.length === 1) {
+                e.preventDefault();
+            } else {
+                setSelectImage([...selectImage, value])
+            }
+        } else {
+            setSelectImage(selectImage.filter(selectimg => selectimg !== value))
+        }
+
         setBackgroungImage(data)
-        console.log("checkbox+++++++++",value);
+        console.log(value, checked);
     };
 
     const getMedia = async () => {
@@ -286,11 +364,9 @@ const Profile = () => {
 
     // download image
     const handleExportImage = async () => {
-
-
         let formData = new FormData();
-        formData.append('api_key', Cookies.get('api_key'));
-        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        // formData.append('api_key', Cookies.get('api_key'));
+        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
         formData.append('timezone', "5.5");
         const zodiacSigns = [
@@ -305,7 +381,7 @@ const Profile = () => {
             "Sagittarius",
             "Capricorn",
             "Aquarius",
-             "Pisces"
+            "Pisces"
         ];
         const headers = {
             'Content-Type': 'multipart/form-data',
@@ -316,16 +392,17 @@ const Profile = () => {
 
         setIsLoading(true)
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px";
-      
-            setIsmobilePreview("preview-mobile-design-div")
-            setIsLoading(true)
+
+        setIsmobilePreview("preview-mobile-design-div")
+        setIsLoading(true)
+
         for (let i = 0; i < 12; i++) {
 
             const ZodiacKey = zodiacSigns;
             console.log("ZodiacKey", ZodiacKey[i]);
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
-            const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+            const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
 
             setCat1(res.data.data.prediction[selectedCategories[0]])
             setCat2(res.data.data.prediction[selectedCategories[1]])
@@ -336,10 +413,8 @@ const Profile = () => {
         setIsmobilePreview("preview-design-div")
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
         setIsLoading(false)
-
-
-
     }
+
     const download = (data, filename) => {
         const a = document.createElement('a');
         a.href = data;
@@ -355,10 +430,10 @@ const Profile = () => {
             <div className="section">
                 {
                     isLoading && <div className="loader">
-                    Loading...
-                </div>
+                        Loading...
+                    </div>
                 }
-                
+
                 <div className="profile-container">
                     <div className="row profile-left-container">
                         <div className="col-lg-8 col-md-12 col-sm-12">
@@ -375,18 +450,18 @@ const Profile = () => {
                                         <div className="checkbox d-flex flex-wrap">
 
                                             {
-                                                categories.map(category => <div className="d-flex align-items-center pe-2" >
-                                                <InputCheckbox
-                                                    className="categoryCheckbox"
-                                                    label={category.name}
-                                                    value={category.value}
-                                                    checkBoxType="category"
-                                                    checked={selectedCategories.includes(category.value)}
-                                                    onChange={handleCheckbox}
-                                                />
-                                            </div>)
+                                                categories.map((category, index) => <div className="d-flex align-items-center pe-2" key={index}>
+                                                    <InputCheckbox
+                                                        className="categoryCheckbox"
+                                                        label={category.name}
+                                                        value={category.value}
+                                                        checkBoxType="category"
+                                                        checked={selectedCategories?.includes(category.value)}
+                                                        onChange={handleCheckbox}
+                                                    />
+                                                </div>)
                                             }
-{/*                                             
+                                            {/*                                             
                                             <div className="d-flex align-items-center pe-2">
                                                 <InputCheckbox
                                                     value="health"
@@ -445,9 +520,26 @@ const Profile = () => {
 
                                     {/* button group */}
                                     <div className="buttons-group">
-                                        <button className="save-as-template-button me-3" > Save as template
-                                            <span className="ps-2"><FontAwesomeIcon icon={faChevronDown} /></span>
-                                        </button>
+                                        <div className="position-reletive">
+                                            <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
+                                            // onClick={ShowSavePopup} style={{ padding: "12px 0px 12px 0px" }}
+                                            > {saveAsTemplateName}</span>
+                                                <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
+                                            </button>
+
+                                            <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
+                                                <div className="allTemplet-list">
+                                                    <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
+                                                    {allTemplet?.map((item, index) => (
+                                                        <div className="" key={index}>
+                                                            <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
+                                                        </div>
+
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <button className="export-button" onClick={handleExportImage}>Export</button>
                                     </div>
                                 </div>
@@ -523,7 +615,7 @@ const Profile = () => {
                                         </Modal.Header>
                                         <Modal.Body className="pe-3">
                                             {selectedImage &&
-                                                (<ReactCrop crop={crop} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
+                                                (<ReactCrop crop={crop} aspect={1} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
                                                     <img src={selectedImage} ref={imgRef} className="selctedIMage pe-3" />
                                                 </ReactCrop>)}
                                         </Modal.Body>
@@ -545,10 +637,11 @@ const Profile = () => {
                                                     <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={index}>
                                                         <InputCheckbox
                                                             checkBoxName="Background[1][]"
-                                                            // value={index+1}
+                                                            value={item}
                                                             className="checkbox-input radio"
                                                             checkBoxType="Zodiac"
-                                                            onClick={() => handleCategoryCheckbox(item)}
+                                                            checked1={selectImage.includes(item)}
+                                                            onClick={(e) => handleCategoryCheckbox(e, item)}
                                                             addSpan={<span className="checkbox-tile">
                                                                 <img src={item} className="Background-image " />
                                                             </span>}
@@ -973,7 +1066,7 @@ const Profile = () => {
                     </span>
                 </button>
             </div>
-
+            <SaveTempletModel isModel={isSaveModel} isHideModel={HideSavePopup} saveChanges={handleTemplate} getName={(e) => setTempletName(e.target.value)} />
 
 
         </>
