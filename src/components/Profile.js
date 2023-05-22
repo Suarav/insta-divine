@@ -17,6 +17,9 @@ import _default from "react-bootstrap/esm/NavDropdown";
 
 import Cookies from 'js-cookie';
 import SaveTempletModel from "./molecule/model/SaveTempletModel";
+import Sidebar from "./Sidebar/sidebar";
+import Navbar from "./navbar/Navbar";
+import TimeZone from "./Timezone/timezone";
 
 
 const currentDate = moment().format('YYYY-MM-DD');
@@ -38,8 +41,8 @@ const Profile = () => {
         unit: '%',
         x: 25,
         y: 25,
-        width: 100,
-        height: 100,
+        width: 40,
+        height: 80,
     })
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
@@ -58,7 +61,7 @@ const Profile = () => {
     const [isMobilePreview, setIsmobilePreview] = useState("preview-design-div")
     const [showOtherRow, setShowOtherRow] = useState(false);
     const [isBackgroundImage, setIsBackGroundImage] = useState([]);
-    const [zodiacName, setZodiacName] = useState('');
+    const [zodiacName, setZodiacName] = useState('Aries');
     const [cat1, setCat1] = useState("");
     const [cat2, setCat2] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +76,34 @@ const Profile = () => {
 
     // add templet
     // console.log("base64String:::", base64String)
+    const checkBoxClick = () => {
+
+    }
+    const pageReloadApicall = async () => {
+        let formData = new FormData();
+        // formData.append('api_key', Cookies.get('api_key'));
+        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        formData.append('date', currentDate);
+        formData.append('timezone', "5.5");
+        formData.append('sign', "Aries");
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            "Accept": "application/json"
+        }
+        const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+
+        setCat1(res.data.data.prediction[selectedCategories[0]])
+        setCat2(res.data.data.prediction[selectedCategories[1]])
+
+
+        // const image = await htmlToImage.toPng(componentRef.current);
+        // download(image, `ARIES-${currentDate}`);
+
+    }
+    useEffect(() => {
+
+        pageReloadApicall();
+    }, [])
     const handleTemplate = async () => {
 
         const TemplateData = {
@@ -399,7 +430,7 @@ const Profile = () => {
         for (let i = 0; i < 12; i++) {
 
             const ZodiacKey = zodiacSigns;
-            console.log("ZodiacKey", ZodiacKey[i]);
+            // console.log("ZodiacKey", ZodiacKey[i]);
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
             const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
@@ -427,41 +458,48 @@ const Profile = () => {
 
     return (
         <>
-            <div className="section">
-                {
-                    isLoading && <div className="loader">
-                        Loading...
-                    </div>
-                }
+            <Navbar />
+            <div class="s-layout">
 
-                <div className="profile-container">
-                    <div className="row profile-left-container">
-                        <div className="col-lg-8 col-md-12 col-sm-12">
-                            <div className="profile-horoscope-categories pt-5">
-                                {/* sticky */}
-                                <div className="position-sticky sticky">
-                                    {/* title */}
-                                    <label>
-                                        <div className="title pb-3">
-                                            Choose Horoscope Categories{" "}
-                                            <span className="sub-title">(You can select only two)</span>
-                                        </div>
-                                        {/* checkbox */}
-                                        <div className="checkbox d-flex flex-wrap">
+                <Sidebar />
+                <div className="s-layout__content">
+                    <div className="section">
+                        {
+                            isLoading && <div className="loader">
+                                Loading...
+                            </div>
+                        }
 
-                                            {
-                                                categories.map((category, index) => <div className="d-flex align-items-center pe-2" key={index}>
-                                                    <InputCheckbox
-                                                        className="categoryCheckbox"
-                                                        label={category.name}
-                                                        value={category.value}
-                                                        checkBoxType="category"
-                                                        checked={selectedCategories?.includes(category.value)}
-                                                        onChange={handleCheckbox}
-                                                    />
-                                                </div>)
-                                            }
-                                            {/*                                             
+                        <div className="profile-container">
+                            <div className="row profile-left-container">
+                                <div className="col-lg-8 col-md-12 col-sm-12">
+                                    <div className="profile-horoscope-categories pt-5">
+                                        {/* sticky */}
+                                        <div className="position-sticky sticky">
+                                            {/* title */}
+                                            <label>
+                                                <div className="title pb-3">
+                                                    Choose Horoscope Categories{" "}
+                                                    <span className="sub-title">(You can select only two)</span>
+                                                </div>
+                                                {/* checkbox */}
+                                                <div className="checkbox d-flex flex-wrap">
+
+                                                    {
+                                                        categories.map((category, index) => <div className="d-flex align-items-center pe-2" key={index}>
+                                                            <InputCheckbox
+                                                                className="categoryCheckbox"
+                                                                label={category.name}
+                                                                value={category.value}
+                                                                checkBoxType="category"
+                                                                checked={selectedCategories?.includes(category.value)}
+                                                                onChange={handleCheckbox}
+                                                                onClick={checkBoxClick}
+
+                                                            />
+                                                        </div>)
+                                                    }
+                                                    {/*                                             
                                             <div className="d-flex align-items-center pe-2">
                                                 <InputCheckbox
                                                     value="health"
@@ -515,194 +553,194 @@ const Profile = () => {
 
                                                 />
                                             </div> */}
-                                        </div>
-                                    </label>
-
-                                    {/* button group */}
-                                    <div className="buttons-group">
-                                        <div className="position-reletive">
-                                            <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
-                                            // onClick={ShowSavePopup} style={{ padding: "12px 0px 12px 0px" }}
-                                            > {saveAsTemplateName}</span>
-                                                <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
-                                            </button>
-
-                                            <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
-                                                <div className="allTemplet-list">
-                                                    <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
-                                                    {allTemplet?.map((item, index) => (
-                                                        <div className="" key={index}>
-                                                            <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
-                                                        </div>
-
-                                                    ))}
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </label>
 
-                                        <button className="export-button" onClick={handleExportImage}>Export</button>
-                                    </div>
-                                </div>
+                                            {/* button group */}
+                                            <div className="buttons-group">
+                                                <div className="position-reletive">
+                                                    <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
+                                                    // onClick={ShowSavePopup} style={{ padding: "12px 0px 12px 0px" }}
+                                                    > {saveAsTemplateName}</span>
+                                                        <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
+                                                    </button>
 
-                                <div className="bottom-section">
-                                    {/* profile */}
-                                    <div className="profile-section">
-                                        <div className="title pb-3">
-                                            Profile
-                                        </div>
-                                        <div className="profile-inner-description">
-                                            <div className="row">
-                                                {/* avatar */}
-                                                <div className="col-lg-3 col-sm-12 d-flex justify-content-center mb-4">
-                                                    <div
-                                                        className="profile-avtar-circle editprofile-avatar rounded-circle d-flex align-items-center justify-content-center"
-                                                        alt="Avatar"
-                                                    >
-                                                        <input type="file" name="file" className="avatar-upload" onChange={handleImageChange} accept="image/*" />
-                                                        <div className="upload-image-icon">
-                                                            <img src="/fileupload.svg" className="camera-img" />
-                                                        </div>
-                                                        <div className="" style={{ width: "130px", height: "130px" }}>
-                                                            {selectedImage != "" ?
-                                                                // <img
-                                                                //     src={selectedImage}
-                                                                //     className="avatar-uploaded-img"
-                                                                //     width="130px"
-                                                                //     height="130px"
-                                                                //     style={{ display: "block" }}
-                                                                // />
-                                                                <canvas
-                                                                    ref={previewCanvasRef}
-                                                                    className="avatar-uploaded-img"
-                                                                    style={{
-                                                                        maxWidth: "130px",
-                                                                        maxHeight: "130px",
-                                                                        width: Math.round(completedCrop?.width ?? 0),
-                                                                        height: Math.round(completedCrop?.height ?? 0),
-                                                                    }}
-                                                                />
-                                                                : ""}
+                                                    <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
+                                                        <div className="allTemplet-list">
+                                                            <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
+                                                            {allTemplet?.map((item, index) => (
+                                                                <div className="" key={index}>
+                                                                    <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
+                                                                </div>
+
+                                                            ))}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-9 col-sm-12">
-                                                    <div className="profile-section-button-group h-100">
 
-                                                        <button className="btn-Pick-an-image mb-sm-4 mb-lg-0 mb-4">
-                                                            <input type="file" name="file" className="btn-Pick-upload" accept="image/*" onChange={handleImageChange} />
-                                                            Pick an image
-                                                        </button>
-                                                        <button className="btn-remove" onClick={() => setSelectedImage("")}>Remove</button>
-                                                    </div>
-
-                                                </div>
-                                                <div className="profile-section-input pt-5">
-                                                    <input type="text" onChange={(e) =>
-                                                        setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
-                                                </div>
+                                                <button className="export-button" onClick={handleExportImage}>Export</button>
                                             </div>
                                         </div>
-                                    </div>
-                                    {/* <canvas
+
+                                        <div className="bottom-section">
+                                            {/* profile */}
+                                            <div className="profile-section">
+                                                <div className="title pb-3">
+                                                    Profile
+                                                </div>
+                                                <div className="profile-inner-description">
+                                                    <div className="row">
+                                                        {/* avatar */}
+                                                        <div className="col-lg-3 col-sm-12 d-flex justify-content-center mb-4">
+                                                            <div
+                                                                className="profile-avtar-circle editprofile-avatar rounded-circle d-flex align-items-center justify-content-center"
+                                                                alt="Avatar"
+                                                            >
+                                                                <input type="file" name="file" className="avatar-upload" onChange={handleImageChange} accept="image/*" />
+                                                                <div className="upload-image-icon">
+                                                                    <img src="/fileupload.svg" className="camera-img" />
+                                                                </div>
+                                                                <div className="" style={{ width: "130px", height: "130px" }}>
+                                                                    {selectedImage != "" ?
+                                                                        // <img
+                                                                        //     src={selectedImage}
+                                                                        //     className="avatar-uploaded-img"
+                                                                        //     width="130px"
+                                                                        //     height="130px"
+                                                                        //     style={{ display: "block" }}
+                                                                        // />
+                                                                        <canvas
+                                                                            ref={previewCanvasRef}
+                                                                            className="avatar-uploaded-img"
+                                                                            style={{
+                                                                                maxWidth: "130px",
+                                                                                maxHeight: "130px",
+                                                                                width: Math.round(completedCrop?.width ?? 0),
+                                                                                height: Math.round(completedCrop?.height ?? 0),
+                                                                            }}
+                                                                        />
+                                                                        : ""}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-lg-9 col-sm-12">
+                                                            <div className="profile-section-button-group h-100">
+
+                                                                <button className="btn-Pick-an-image mb-sm-4 mb-lg-0 mb-4">
+                                                                    <input type="file" name="file" className="btn-Pick-upload" accept="image/*" onChange={handleImageChange} />
+                                                                    Pick an image
+                                                                </button>
+                                                                <button className="btn-remove" onClick={() => setSelectedImage("")}>Remove</button>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="profile-section-input pt-5">
+                                                            <input type="text" onChange={(e) =>
+                                                                setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* <canvas
                                         ref={previewCanvasRef}
                                         style={{
                                             width: Math.round(completedCrop?.width ?? 0),
                                             height: Math.round(completedCrop?.height ?? 0),
                                         }}
                                     /> */}
-                                    <Modal show={cropModelShow} className="fontStyle-model" onHide={setCropModelShow}>
-                                        <Modal.Header closeButton>
-                                        </Modal.Header>
-                                        <Modal.Body className="pe-3">
-                                            {selectedImage &&
-                                                (<ReactCrop crop={crop} aspect={1} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
-                                                    <img src={selectedImage} ref={imgRef} className="selctedIMage pe-3" />
-                                                </ReactCrop>)}
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="secondary" className="px-4" onClick={handleCropImage}>
-                                                Crop
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Modal>
+                                            <Modal show={cropModelShow} className="fontStyle-model" onHide={setCropModelShow}>
+                                                <Modal.Header closeButton>
+                                                </Modal.Header>
+                                                <Modal.Body className="pe-3">
+                                                    {selectedImage &&
+                                                        (<ReactCrop crop={crop} aspect={1} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
+                                                            <img src={selectedImage} ref={imgRef} className="selctedIMage pe-3" />
+                                                        </ReactCrop>)}
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" className="px-4" onClick={handleCropImage}>
+                                                        Crop
+                                                    </Button>
+                                                </Modal.Footer>
+                                            </Modal>
 
-                                    {/* Background */}
-                                    <div className="Background-section ">
-                                        <div className="title pb-3">
-                                            Background
-                                        </div>
-                                        <div className="Background-inner-description ">
-                                            <div className="row">
-                                                {isBackgroundImage.map((item, index) => (
-                                                    <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={index}>
-                                                        <InputCheckbox
-                                                            checkBoxName="Background[1][]"
-                                                            value={item}
-                                                            className="checkbox-input radio"
-                                                            checkBoxType="Zodiac"
-                                                            checked1={selectImage.includes(item)}
-                                                            onClick={(e) => handleCategoryCheckbox(e, item)}
-                                                            addSpan={<span className="checkbox-tile">
-                                                                <img src={item} className="Background-image " />
-                                                            </span>}
-                                                        />
+                                            {/* Background */}
+                                            <div className="Background-section ">
+                                                <div className="title pb-3">
+                                                    Background
+                                                </div>
+                                                <div className="Background-inner-description ">
+                                                    <div className="row">
+                                                        {isBackgroundImage.map((item, index) => (
+                                                            <div className="col-lg-3 col-md-4 col-sm-6 col-6" key={index}>
+                                                                <InputCheckbox
+                                                                    checkBoxName="Background[1][]"
+                                                                    value={item}
+                                                                    className="checkbox-input radio"
+                                                                    checkBoxType="Zodiac"
+                                                                    checked1={selectImage.includes(item)}
+                                                                    onClick={(e) => handleCategoryCheckbox(e, item)}
+                                                                    addSpan={<span className="checkbox-tile">
+                                                                        <img src={item} className="Background-image " />
+                                                                    </span>}
+                                                                />
+                                                            </div>
+                                                        ))}
+
                                                     </div>
-                                                ))}
 
-                                            </div>
-
-                                            {/* showMore btn */}
-                                            <div className="w-100 d-flex justify-content-center">
-                                                <div className="showMore-background-btn position-absolute my-lg-3" onClick={handleMoreBackgroundImage}>
-                                                    <FontAwesomeIcon icon={faChevronDown} className="faChevronDown-arrow" style={{ color: "#1a1a1a", rotate: showOtherRow && "180deg" }} />
+                                                    {/* showMore btn */}
+                                                    <div className="w-100 d-flex justify-content-center">
+                                                        <div className="showMore-background-btn position-absolute my-lg-3" onClick={handleMoreBackgroundImage}>
+                                                            <FontAwesomeIcon icon={faChevronDown} className="faChevronDown-arrow" style={{ color: "#1a1a1a", rotate: showOtherRow && "180deg" }} />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    {/* Zodiac-Style */}
-                                    <div className="Zodiac-Style-section ">
-                                        <div className="title pb-3">
-                                            Zodiac Style
-                                        </div>
-                                        <div className="Zodiac-Style-inner-description">
-                                            <div className="row">
-                                                <div className="col-lg-4 col-sm-6 col-md-4  col-6 mb-2">
-                                                    <InputCheckbox
-                                                        checkBoxName="Zodiac[1][]"
-                                                        onClick={() => handleZodiac("/zodiac/Aries.png")}
-                                                        defaultValue="5"
-                                                        className="checkbox-input radio"
-                                                        checkBoxType="Zodiac"
-                                                        addSpan={<span className="checkbox-tile Zodiac-Style-div">
-                                                            <img src="/zodiac/Aries.png" width="85px" height="85px" />
-                                                        </span>}
-                                                    />
+                                            {/* Zodiac-Style */}
+                                            <div className="Zodiac-Style-section ">
+                                                <div className="title pb-3">
+                                                    Zodiac Style
                                                 </div>
-                                                <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
-                                                    <InputCheckbox
-                                                        checkBoxName="Zodiac[1][]"
-                                                        defaultValue="6"
-                                                        onClick={() => handleZodiac("/zodiac/Libra.png")}
-                                                        className="checkbox-input radio"
-                                                        checkBoxType="Zodiac"
-                                                        addSpan={<span className="checkbox-tile Zodiac-Style-div">
-                                                            <img src="/zodiac/Libra.png" width="85px" height="85px" />
-                                                        </span>}
-                                                    />
-                                                </div>
-                                                <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
-                                                    <InputCheckbox
-                                                        checkBoxName="Zodiac[1][]"
-                                                        defaultValue="1"
-                                                        onClick={() => handleZodiac("/zodiac/Virgo.png")}
-                                                        className="checkbox-input radio"
-                                                        checkBoxType="Zodiac"
-                                                        addSpan={<span className="checkbox-tile Zodiac-Style-div">
-                                                            <img src="/zodiac/Virgo.png" width="85px" height="85px" />
-                                                        </span>}
-                                                    />
-                                                </div>
-                                                {/* <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
+                                                <div className="Zodiac-Style-inner-description">
+                                                    <div className="row">
+                                                        <div className="col-lg-4 col-sm-6 col-md-4  col-6 mb-2">
+                                                            <InputCheckbox
+                                                                checkBoxName="Zodiac[1][]"
+                                                                onClick={() => handleZodiac("/zodiac/Aries.png")}
+                                                                defaultValue="5"
+                                                                className="checkbox-input radio"
+                                                                checkBoxType="Zodiac"
+                                                                addSpan={<span className="checkbox-tile Zodiac-Style-div">
+                                                                    <img src="/zodiac/Aries.png" width="85px" height="85px" />
+                                                                </span>}
+                                                            />
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
+                                                            <InputCheckbox
+                                                                checkBoxName="Zodiac[1][]"
+                                                                defaultValue="6"
+                                                                onClick={() => handleZodiac("/zodiac/Libra.png")}
+                                                                className="checkbox-input radio"
+                                                                checkBoxType="Zodiac"
+                                                                addSpan={<span className="checkbox-tile Zodiac-Style-div">
+                                                                    <img src="/zodiac/Libra.png" width="85px" height="85px" />
+                                                                </span>}
+                                                            />
+                                                        </div>
+                                                        <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
+                                                            <InputCheckbox
+                                                                checkBoxName="Zodiac[1][]"
+                                                                defaultValue="1"
+                                                                onClick={() => handleZodiac("/zodiac/Virgo.png")}
+                                                                className="checkbox-input radio"
+                                                                checkBoxType="Zodiac"
+                                                                addSpan={<span className="checkbox-tile Zodiac-Style-div">
+                                                                    <img src="/zodiac/Virgo.png" width="85px" height="85px" />
+                                                                </span>}
+                                                            />
+                                                        </div>
+                                                        {/* <div className="col-lg-4 col-sm-6 col-md-4 col-6 mb-2">
                                                     <InputCheckbox
                                                         checkBoxName="Zodiac[1][]"
                                                         defaultValue="6"
@@ -714,8 +752,8 @@ const Profile = () => {
                                                         </span>}
                                                     />
                                                 </div> */}
-                                            </div>
-                                            {/* <div className="d-flex justify-content-between flex-wrap">
+                                                    </div>
+                                                    {/* <div className="d-flex justify-content-between flex-wrap">
                                                 <InputCheckbox
                                                     checkBoxName="Zodiac[1][]"
                                                     onClick={() => handleZodiac("/zodiac/Aries.png")}
@@ -747,7 +785,7 @@ const Profile = () => {
                                                     </span>}
                                                 />
                                             </div> */}
-                                            {/* <InputCheckbox
+                                                    {/* <InputCheckbox
                                                 checkBoxName="Zodiac[1][]"
                                                 defaultValue="7"
                                                 className="checkbox-input radio"
@@ -775,300 +813,301 @@ const Profile = () => {
                                                 </span>}
                                             /> */}
 
-                                        </div>
-                                    </div>
-                                    {/* Category-Button-Style */}
-                                    <div className="Category-Button-Style-section">
-                                        <div className="title pb-3">
-                                            Category Button Style
-                                        </div>
-                                        <div className="Category-Button-Style-description">
-                                            {/* Fill */}
-                                            <label className="pb-3">Fill</label>
-                                            <div className="d-flex justify-content-between">
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-fill"
-                                                    onClick={handleButtonStyle}
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-fill"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-rounded"
-                                                    onClick={handleButtonStyle}
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-rounded"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-full-rounded"
-                                                    onClick={handleButtonStyle}
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-full-rounded"></div>
-                                                    </span>}
-                                                />
+                                                </div>
                                             </div>
-                                            {/* Outline */}
-                                            <label className="pb-3 Outline-title">Outline</label>
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-border"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-border"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-rounded-border"
-                                                    onClick={handleButtonStyle}
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-rounded-border"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-full-rounded-border"
-                                                    onClick={handleButtonStyle}
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-full-rounded-border"></div>
-                                                    </span>}
-                                                />
-                                            </div>
-                                            {/* Hard shadow */}
-                                            <label className="pb-3 hardShadow-title">Hard shadow</label>
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <InputCheckbox
-                                                    onClick={handleButtonStyle}
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    value="square-hardShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-hardShadow"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-rounded-hardShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-rounded-hardShadow"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-full-rounded-hardShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-full-rounded-hardShadow"></div>
-                                                    </span>}
-                                                />
-                                            </div>
-                                            {/* Soft shadow */}
-                                            <label className="pb-3 softShadow-title">Soft shadow</label>
-                                            <div className="d-flex align-items-center justify-content-between">
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-SoftShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-SoftShadow"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-rounded-SoftShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-rounded-SoftShadow"></div>
-                                                    </span>}
-                                                />
-                                                <InputCheckbox
-                                                    checkBoxName="ButtonStyle[1][]"
-                                                    onClick={handleButtonStyle}
-                                                    value="square-full-rounded-SoftShadow"
-                                                    className="checkbox-input radio"
-                                                    checkBoxType="Zodiac"
-                                                    addSpan={<span className="checkbox-tile ">
-                                                        <div className="square square-full-rounded-SoftShadow"></div>
-                                                    </span>}
-                                                />
-                                            </div>
-                                            {/* Spacial upgrade */}
-                                            {/* <label className="pb-3 Spacial-Upgrade-title">Spacial
+                                            {/* Category-Button-Style */}
+                                            <div className="Category-Button-Style-section">
+                                                <div className="title pb-3">
+                                                    Category Button Style
+                                                </div>
+                                                <div className="Category-Button-Style-description">
+                                                    {/* Fill */}
+                                                    <label className="pb-3">Fill</label>
+                                                    <div className="d-flex justify-content-between">
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-fill"
+                                                            onClick={handleButtonStyle}
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-fill"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-rounded"
+                                                            onClick={handleButtonStyle}
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-rounded"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-full-rounded"
+                                                            onClick={handleButtonStyle}
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-full-rounded"></div>
+                                                            </span>}
+                                                        />
+                                                    </div>
+                                                    {/* Outline */}
+                                                    <label className="pb-3 Outline-title">Outline</label>
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-border"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-border"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-rounded-border"
+                                                            onClick={handleButtonStyle}
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-rounded-border"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-full-rounded-border"
+                                                            onClick={handleButtonStyle}
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-full-rounded-border"></div>
+                                                            </span>}
+                                                        />
+                                                    </div>
+                                                    {/* Hard shadow */}
+                                                    <label className="pb-3 hardShadow-title">Hard shadow</label>
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <InputCheckbox
+                                                            onClick={handleButtonStyle}
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            value="square-hardShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-hardShadow"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-rounded-hardShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-rounded-hardShadow"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-full-rounded-hardShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-full-rounded-hardShadow"></div>
+                                                            </span>}
+                                                        />
+                                                    </div>
+                                                    {/* Soft shadow */}
+                                                    <label className="pb-3 softShadow-title">Soft shadow</label>
+                                                    <div className="d-flex align-items-center justify-content-between">
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-SoftShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-SoftShadow"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-rounded-SoftShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-rounded-SoftShadow"></div>
+                                                            </span>}
+                                                        />
+                                                        <InputCheckbox
+                                                            checkBoxName="ButtonStyle[1][]"
+                                                            onClick={handleButtonStyle}
+                                                            value="square-full-rounded-SoftShadow"
+                                                            className="checkbox-input radio"
+                                                            checkBoxType="Zodiac"
+                                                            addSpan={<span className="checkbox-tile ">
+                                                                <div className="square square-full-rounded-SoftShadow"></div>
+                                                            </span>}
+                                                        />
+                                                    </div>
+                                                    {/* Spacial upgrade */}
+                                                    {/* <label className="pb-3 Spacial-Upgrade-title">Spacial
                                                 <span className="ms-2 Spacial-Upgrade">Upgrade
                                                     <FontAwesomeIcon className="ps-2" icon={faLock} style={{ Color: "#ffffff" }}></FontAwesomeIcon>
                                                 </span>
                                             </label> */}
-                                            <div className="d-flex align-items-center">
-                                                {/* <div className="square square-SoftShadow me-2"></div>
+                                                    <div className="d-flex align-items-center">
+                                                        {/* <div className="square square-SoftShadow me-2"></div>
                                                 <div className="square square-rounded-SoftShadow me-2"></div>
                                                 <div className="square square-full-rounded-SoftShadow"></div> */}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/*  Category Button Style */}
-                                    <div className="Category-Button-Style-section">
-                                        <div className="title pb-3">
-                                            Category Button Color
-                                        </div>
-                                        <div className="Category-Button-Style-description">
-                                            <div className="cusotom-color-picker d-flex">
-                                                <div className="color-picker-box"></div>
-                                                <label className="color-picker-detail" htmlFor="colorPicker">
-                                                    <div className="color-picker-label-name">Button color</div>
-                                                    <div id="colorCode">#813737</div>
-                                                </label>
-                                                <input type="color" onChange={(e) => setCategoryBtnColor(e.target.value)} className="color-input-feild" defaultValue="#813737" id="colorPicker" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* Category Button font Style  */}
-                                    <div className="Category-Button-Style-section">
-                                        <div className="title pb-3">
-                                            Category Button Font Color
-                                        </div>
-                                        <div className="Category-Button-Style-description">
-                                            <div className="cusotom-color-picker d-flex">
-                                                <div className="Categorycolor-picker-box"></div>
-                                                <label className="color-picker-detail" htmlFor="CategoryColorPicker">
-                                                    <div className="color-picker-label-name">Button color</div>
-                                                    <div id="CategoryColorCode">#ffffff</div>
-                                                </label>
-                                                <input type="color" onChange={(e) => setCategoryBtnFontColor(e.target.value)} className="color-input-feild" defaultValue="#ffffff" id="CategoryColorPicker" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/* font */}
-                                    <div className="font-Style-section">
-                                        <div className="title pb-3">
-                                            Font
-                                        </div>
-                                        <div className="font-Style-description">
-                                            {/* font-family */}
-                                            <div className="fontStyle-title pb-3">Font</div>
-                                            <div className="fontStyle-picker d-flex" onClick={handleShow}>
-                                                <div className="font-box" style={{ fontFamily: fontFamaily }} >Aa</div>
-                                                <span className="ps-3" name="Arvo" style={{ fontFamily: fontFamaily }}>{fontFamaily}</span>
-                                            </div>
-                                            {/* color */}
-                                            <div className="Color-title pb-3">Color</div>
-                                            <div className="d-flex align-items-center">
-                                                <div className="Fontcolor-picker-box"></div>
-                                                <label className="color-picker-detail" htmlFor="FontColorPicker">
-                                                    <div className="color-picker-label-name">Button color</div>
-                                                    <div id="FontColorCode">#000000</div>
-                                                </label>
-                                                <input type="color" onChange={(e) => setFontColorCode(e.target.value)} className="color-input-feild" defaultValue="#000000" id="FontColorPicker" />
+                                                    </div>
+                                                </div>
                                             </div>
 
+                                            {/*  Category Button Style */}
+                                            <div className="Category-Button-Style-section">
+                                                <div className="title pb-3">
+                                                    Category Button Color
+                                                </div>
+                                                <div className="Category-Button-Style-description">
+                                                    <div className="cusotom-color-picker d-flex">
+                                                        <div className="color-picker-box"></div>
+                                                        <label className="color-picker-detail" htmlFor="colorPicker">
+                                                            <div className="color-picker-label-name">Button color</div>
+                                                            <div id="colorCode">#813737</div>
+                                                        </label>
+                                                        <input type="color" onChange={(e) => setCategoryBtnColor(e.target.value)} className="color-input-feild" defaultValue="#813737" id="colorPicker" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* Category Button font Style  */}
+                                            <div className="Category-Button-Style-section">
+                                                <div className="title pb-3">
+                                                    Category Button Font Color
+                                                </div>
+                                                <div className="Category-Button-Style-description">
+                                                    <div className="cusotom-color-picker d-flex">
+                                                        <div className="Categorycolor-picker-box"></div>
+                                                        <label className="color-picker-detail" htmlFor="CategoryColorPicker">
+                                                            <div className="color-picker-label-name">Button color</div>
+                                                            <div id="CategoryColorCode">#ffffff</div>
+                                                        </label>
+                                                        <input type="color" onChange={(e) => setCategoryBtnFontColor(e.target.value)} className="color-input-feild" defaultValue="#ffffff" id="CategoryColorPicker" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {/* font */}
+                                            <div className="font-Style-section">
+                                                <div className="title pb-3">
+                                                    Font
+                                                </div>
+                                                <div className="font-Style-description">
+                                                    {/* font-family */}
+                                                    <div className="fontStyle-title pb-3">Font</div>
+                                                    <div className="fontStyle-picker d-flex" onClick={handleShow}>
+                                                        <div className="font-box" style={{ fontFamily: fontFamaily }} >Aa</div>
+                                                        <span className="ps-3" name="Arvo" style={{ fontFamily: fontFamaily }}>{fontFamaily}</span>
+                                                    </div>
+                                                    {/* color */}
+                                                    <div className="Color-title pb-3">Color</div>
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="Fontcolor-picker-box"></div>
+                                                        <label className="color-picker-detail" htmlFor="FontColorPicker">
+                                                            <div className="color-picker-label-name">Button color</div>
+                                                            <div id="FontColorCode">#000000</div>
+                                                        </label>
+                                                        <input type="color" onChange={(e) => setFontColorCode(e.target.value)} className="color-input-feild" defaultValue="#000000" id="FontColorPicker" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div>
+                                        <Model isModel={show} showModel={handleShow} hideModel={handleClose} className="fontStyle-model" />
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <Model isModel={show} showModel={handleShow} hideModel={handleClose} className="fontStyle-model" />
-                            </div>
-                        </div>
-                        {/* {isMobilePreview ? } */}
-                        <div className={`col-lg-4 col-sm-12 col-md-12 ${isMobilePreview}`}>
+                                {/* {isMobilePreview ? } */}
+                                <div className={`col-lg-4 col-sm-12 col-md-12 ${isMobilePreview}`}>
 
-                            <div className="Mobile-section d-flex justify-content-end">
-                                <div className="preview-wrap">
-                                    <div ref={componentRef} className="h-100 preview-componentRef-div" style={{ backgroundImage: `url(${backgroundImage}` }}>
-                                        {/* close button */}
-                                        <div className="preview-close-btn" onClick={handlepreview}>
-                                            <span className="close-btn"><FontAwesomeIcon icon={faClose} size='2xl' /></span>
-                                        </div>
-                                        <div className="Mobile-preview-scroll">
-                                            {/* profile-image */}
-                                            <div className="mobile-profile-circle">
-                                                {base64String != "" ?
-                                                    <img src={base64String}
-                                                        alt="Converted to base64"
-                                                        className="mobile-profile-img"
-                                                        width="80px"
-                                                        height="80px"
-                                                    /> : ""}
-                                                {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
+                                    <div className="Mobile-section d-flex justify-content-end">
+                                        <div className="preview-wrap">
+                                            <div ref={componentRef} className="h-100 preview-componentRef-div" style={{ backgroundImage: `url(${backgroundImage}` }}>
+                                                {/* close button */}
+                                                <div className="preview-close-btn" onClick={handlepreview}>
+                                                    <span className="close-btn"><FontAwesomeIcon icon={faClose} size='2xl' /></span>
+                                                </div>
+                                                <div className="Mobile-preview-scroll">
+                                                    {/* profile-image */}
+                                                    <div className="mobile-profile-circle">
+                                                        {base64String != "" ?
+                                                            <img src={base64String}
+                                                                alt="Converted to base64"
+                                                                className="mobile-profile-img"
+                                                                width="80px"
+                                                                height="80px"
+                                                            /> : ""}
+                                                        {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
                                             a
                                         </p> */}
+                                                    </div>
+                                                    <div className="profile-useName mt-1">{profileTitle}</div>
+                                                    <div className="profile-ZodiacName  d-flex align-items-center justify-content-center my-3">
+                                                        <img src={zodiacImage} width="40px" height="40px" />
+                                                        <span className="ps-2" style={{ color: fontColor, fontFamily: fontFamaily }}>{zodiacName}</span>
+                                                    </div>
+                                                    <div className="Horoscope-Categories  mt-4 mb-2" style={{
+                                                        backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
+                                                        border: handleButtonOutLines(),
+                                                        boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
+                                                        fontFamily: fontFamaily,
+                                                        borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
+                                                    }}>
+                                                        {categories.find(category => category.value === selectedCategories[0])?.name}
+                                                    </div>
+                                                    <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
+                                                        {cat1 != "" ? cat1 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
+                                                    </div>
+                                                    <div className="Horoscope-Categories mt-4 mb-2" style={{
+                                                        backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
+                                                        border: handleButtonOutLines(),
+                                                        boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
+                                                        fontFamily: fontFamaily,
+                                                        borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
+                                                    }}>
+                                                        {categories.find(category => category.value === selectedCategories[1])?.name}
+                                                    </div>
+                                                    <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
+                                                        {cat2 != "" ? cat2 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="profile-useName mt-1">{profileTitle}</div>
-                                            <div className="profile-ZodiacName  d-flex align-items-center justify-content-center my-3">
-                                                <img src={zodiacImage} width="40px" height="40px" />
-                                                <span className="ps-2" style={{ color: fontColor, fontFamily: fontFamaily }}>{zodiacName}</span>
-                                            </div>
-                                            <div className="Horoscope-Categories  mt-4 mb-2" style={{
-                                                backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
-                                                border: handleButtonOutLines(),
-                                                boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
-                                                fontFamily: fontFamaily,
-                                                borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
-                                            }}>
-                                                {categories.find(category => category.value === selectedCategories[0])?.name}
-                                            </div>
-                                            <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                {cat1 != "" ? cat1 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
-                                            </div>
-                                            <div className="Horoscope-Categories mt-4 mb-2" style={{
-                                                backgroundColor: handleButtonStylesheet(), color: categoryBtnFontColor,
-                                                border: handleButtonOutLines(),
-                                                boxShadow: btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" ? "none" : btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" ? handleButtonSoftShadow() : handleButtonHardShadow(),
-                                                fontFamily: fontFamaily,
-                                                borderRadius: btnStyle == "square-fill" ? "0px" : btnStyle == "square-rounded" ? "10px" : btnStyle == "square-full-rounded" ? "25px" : btnStyle == "square-border" ? "0px" : btnStyle == "square-rounded-border" ? "10px" : btnStyle == "square-full-rounded-border" ? "25px" : btnStyle == "square-hardShadow" ? "0px" : btnStyle == "square-rounded-hardShadow" ? "10px" : btnStyle == "square-full-rounded-hardShadow" ? "25px" : btnStyle == "square-SoftShadow" ? "0px" : btnStyle == "square-rounded-SoftShadow" ? "10px" : btnStyle == "square-full-rounded-SoftShadow" ? "25px" : ""
-                                            }}>
-                                                {categories.find(category => category.value === selectedCategories[1])?.name}
-                                            </div>
-                                            <div className="Horoscope-Categories-description" style={{ color: fontColor, fontFamily: fontFamaily }}>
-                                                {cat2 != "" ? cat2 : "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy."}
-                                            </div>
+
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className="preview-button-div">
+                        <button className="preview-button" onClick={handlepreview}>
+                            <span>
+                                <span className="pe-2"><FontAwesomeIcon icon={faEye} /></span>
+                                Preview
+                            </span>
+                        </button>
+                    </div>
+                    <SaveTempletModel isModel={isSaveModel} isHideModel={HideSavePopup} saveChanges={handleTemplate} getName={(e) => setTempletName(e.target.value)} />
                 </div>
             </div>
-            <div className="preview-button-div">
-                <button className="preview-button" onClick={handlepreview}>
-                    <span>
-                        <span className="pe-2"><FontAwesomeIcon icon={faEye} /></span>
-                        Preview
-                    </span>
-                </button>
-            </div>
-            <SaveTempletModel isModel={isSaveModel} isHideModel={HideSavePopup} saveChanges={handleTemplate} getName={(e) => setTempletName(e.target.value)} />
-
-
+            {/* <TimeZone /> */}
         </>
     )
 }

@@ -1,0 +1,41 @@
+.navbar-section-design {
+    background-color: #ffffff;
+    height: 62px;
+    border-bottom: 1px solid #d4dcd6;
+    position: sticky;
+    top: 0;
+    z-index: 999
+}
+
+.brand-image {
+    line-height: .8;
+    margin-left: 5.8rem;
+    margin-right: 7.5rem;
+    margin-top: 6px;
+    max-height: 47px;
+    width: auto;
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    padding: 0.8125rem 0.5rem;
+    transition: width .3s ease-in-out;
+    white-space: nowrap;
+}
+
+.profile-logout-div {
+    margin-right: 25px;
+}
+
+.profile-avatar {
+    height: 37px;
+    width: 37px;
+    background-color: #ffc107;
+    border-color: #ffc107;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
