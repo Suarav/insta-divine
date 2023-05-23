@@ -40,8 +40,8 @@ const Profile = () => {
         unit: '%',
         x: 25,
         y: 25,
-        width: 40,
-        height: 80,
+        width: 50,
+        height: 50,
     })
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
@@ -65,7 +65,7 @@ const Profile = () => {
     const [cat2, setCat2] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedCategories, setSelectedCategories] = useState(["personal", "health"]);
-    const [selectImage, setSelectImage] = useState([]);
+    // const [selectImage, setSelectImage] = useState([]);
     const [isDropDown, setIsdropDown] = useState(false)
     const [allTemplet, setAllTemplet] = useState([])
     const [selectedTemplateData, setselectedTemplateData] = useState({});
@@ -77,9 +77,9 @@ const Profile = () => {
 
     // add templet
     // console.log("base64String:::", base64String)
-    const checkBoxClick = () => {
+    // const checkBoxClick = () => {
 
-    }
+    // }
     const handleTimeZoneData = (timeZoneData) => {
         console.log("timeZoneData::::", timeZoneData)
         setTimeZoneValue(timeZoneData)
@@ -95,23 +95,30 @@ const Profile = () => {
             'Content-Type': 'multipart/form-data',
             "Accept": "application/json"
         }
-        const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
-        if (res.data.data.status == 1) {
+        const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+
+        setZodiacData(res.data.data.prediction)
+        setCat1(res.data.data.prediction[selectedCategories[0]])
+        setCat2(res.data.data.prediction[selectedCategories[1]])
+        setIsLoading(false);
+        //     if (res.data.data.status == 1) {
 
 
-            setZodiacData(res.data.data.prediction)
-            setCat1(res.data.data.prediction[selectedCategories[0]])
-            setCat2(res.data.data.prediction[selectedCategories[1]])
-        }
-        else {
-            window.location = "https://divineapi.com"
-        }
+        //     }
+        //     else {
+        //         window.location = "https://divineapi.com"
+        //     }
     }
 
 
     useEffect(() => {
+        setIsLoading(true);
         pageReloadApicall();
+
     }, []);
+
+
+
 
     const handleTemplate = async () => {
 
@@ -190,8 +197,10 @@ const Profile = () => {
 
     }
     useEffect(() => {
+        // setIsLoading(true);
         setCat1(zodiacData[selectedCategories[0]])
         setCat2(zodiacData[selectedCategories[1]])
+        //  setIsLoading(false);
     }, [selectedCategories]);
 
     const setCanvasImage = (image, canvas, crop) => {
@@ -301,15 +310,15 @@ const Profile = () => {
         // const inputValue = inputRef.current?.value;
         const { value, checked } = e.target;
 
-        if (checked) {
-            if (selectImage.length === 1) {
-                e.preventDefault();
-            } else {
-                setSelectImage([...selectImage, value])
-            }
-        } else {
-            setSelectImage(selectImage.filter(selectimg => selectimg !== value))
-        }
+        // if (checked) {
+        //     if (backgroundImage.length === 1) {
+        //         e.preventDefault();
+        //     } else {
+        //         setBackgroungImage([...backgroundImage, value])
+        //     }
+        // } else {
+        //     setBackgroungImage(backgroundImage.filter(selectimg => selectimg !== value))
+        // }
 
         setBackgroungImage(data)
         console.log(value, checked);
@@ -354,6 +363,11 @@ const Profile = () => {
         }
         // setSelectedImage(URL.createObjectURL(event.target.files[0]))
     };
+    // remove profile images
+    const removeSelectedImage = () => {
+        setSelectedImage("")
+        setBase64String("")
+    }
     // crop image
     const handleCropImage = () => {
         setCanvasImage(imgRef.current, previewCanvasRef.current, completedCrop);
@@ -410,61 +424,73 @@ const Profile = () => {
     // download image
     const handleExportImage = async () => {
 
-        let formData = new FormData();
-        formData.append('api_key', Cookies.get('api_key'));
-        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
-        formData.append('date', currentDate);
-        formData.append('timezone', timeZoneValue);
-        const zodiacSigns = [
-            "Aries",
-            "Taurus",
-            "Gemini",
-            "Cancer",
-            "Leo",
-            "Virgo",
-            "Libra",
-            "Scorpio",
-            "Sagittarius",
-            "Capricorn",
-            "Aquarius",
-            "Pisces"
-        ];
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            "Accept": "application/json"
+        if (selectedCategories.length < 2) {
+            alert("Please Select Any Two categrioes")
         }
-        //  const currentDate = new Date().toLocaleDateString('en-CA');
+        else {
+            let formData = new FormData();
+            formData.append('api_key', Cookies.get('api_key'));
+            // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+            formData.append('date', currentDate);
+            formData.append('timezone', timeZoneValue);
+            const zodiacSigns = [
+                "Aries",
+                "Taurus",
+                "Gemini",
+                "Cancer",
+                "Leo",
+                "Virgo",
+                "Libra",
+                "Scorpio",
+                "Sagittarius",
+                "Capricorn",
+                "Aquarius",
+                "Pisces"
+            ];
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+                "Accept": "application/json"
+            }
 
 
-        setIsLoading(true)
-        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px";
+            setIsLoading(true)
+            document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "0px";
 
-        setIsmobilePreview("preview-mobile-design-div")
-        setIsLoading(true)
+            setIsmobilePreview("preview-mobile-design-div")
+            setIsLoading(true)
 
-        for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 12; i++) {
 
-            const ZodiacKey = zodiacSigns;
-            // console.log("ZodiacKey", ZodiacKey[i]);
-            formData.append('sign', ZodiacKey[i]);
-            setZodiacName(ZodiacKey[i])
-            const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
-            if (res.data.data.status == 1) {
+                const ZodiacKey = zodiacSigns;
+                // console.log("ZodiacKey", ZodiacKey[i]);
+                formData.append('sign', ZodiacKey[i]);
+                setZodiacName(ZodiacKey[i])
+                const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+                // console.log("res+++++++++++++",res)
+                console.log("selectedCategories[0]]+++++++++", selectedCategories[0])
+
+                console.log("selectedCategories[1]]+++++++++", selectedCategories[1])
+
                 setCat1(res.data.data.prediction[selectedCategories[0]])
                 setCat2(res.data.data.prediction[selectedCategories[1]])
                 const image = await htmlToImage.toPng(componentRef.current);
                 download(image, `${ZodiacKey[i]}-${currentDate}`);
 
-            }
-            else {
-                window.location = "http://dev.divineapi.com"
-            }
+                // if (res.data.data.status == 1) {
+
+                // }
+                // else {
+                //     window.location = "http://dev.divineapi.com"
+                // }
 
 
+            }
+            setIsmobilePreview("preview-design-div")
+            document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
+            setIsLoading(false)
         }
-        // setIsmobilePreview("preview-design-div")
-        document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
-        setIsLoading(false)
+
+
     }
 
     const download = (data, filename) => {
@@ -515,7 +541,7 @@ const Profile = () => {
                                                                 checkBoxType="category"
                                                                 checked={selectedCategories?.includes(category.value)}
                                                                 onChange={handleCheckbox}
-                                                                onClick={checkBoxClick}
+                                                            // onClick={checkBoxClick}
 
                                                             />
                                                         </div>)
@@ -651,7 +677,7 @@ const Profile = () => {
                                                                     <input type="file" name="file" className="btn-Pick-upload" accept="image/*" onChange={handleImageChange} />
                                                                     Pick an image
                                                                 </button>
-                                                                <button className="btn-remove" onClick={() => setSelectedImage("")}>Remove</button>
+                                                                <button className="btn-remove" onClick={removeSelectedImage}>Remove</button>
                                                             </div>
 
                                                         </div>
@@ -699,7 +725,7 @@ const Profile = () => {
                                                                     value={item}
                                                                     className="checkbox-input radio"
                                                                     checkBoxType="Zodiac"
-                                                                    checked1={selectImage.includes(item)}
+                                                                    checked1={backgroundImage.includes(item)}
                                                                     onClick={(e) => handleCategoryCheckbox(e, item)}
                                                                     addSpan={<span className="checkbox-tile">
                                                                         <img src={item} className="Background-image " />
