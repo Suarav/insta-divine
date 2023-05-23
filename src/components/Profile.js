@@ -96,11 +96,16 @@ const Profile = () => {
             "Accept": "application/json"
         }
         const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+        if (res.data.data.status == 1) {
 
 
-        setZodiacData(res.data.data.prediction)
-        setCat1(res.data.data.prediction[selectedCategories[0]])
-        setCat2(res.data.data.prediction[selectedCategories[1]])
+            setZodiacData(res.data.data.prediction)
+            setCat1(res.data.data.prediction[selectedCategories[0]])
+            setCat2(res.data.data.prediction[selectedCategories[1]])
+        }
+        else {
+            window.location = "https://divineapi.com"
+        }
     }
 
 
@@ -444,14 +449,18 @@ const Profile = () => {
             formData.append('sign', ZodiacKey[i]);
             setZodiacName(ZodiacKey[i])
             const res = await axios.post("https://divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+            if (res.data.data.status == 1) {
+                setCat1(res.data.data.prediction[selectedCategories[0]])
+                setCat2(res.data.data.prediction[selectedCategories[1]])
+                const image = await htmlToImage.toPng(componentRef.current);
+                download(image, `${ZodiacKey[i]}-${currentDate}`);
+
+            }
+            else {
+                window.location = "http://dev.divineapi.com"
+            }
 
 
-            setCat1(res.data.data.prediction[selectedCategories[0]])
-            setCat2(res.data.data.prediction[selectedCategories[1]])
-
-
-            const image = await htmlToImage.toPng(componentRef.current);
-            download(image, `${ZodiacKey[i]}-${currentDate}`);
         }
         // setIsmobilePreview("preview-design-div")
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
