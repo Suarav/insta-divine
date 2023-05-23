@@ -1,10 +1,15 @@
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { propTypes } from "react-bootstrap/esm/Image";
 import "../navbar/navbar.css"
 import TimeZone from "../Timezone/timezone";
-const Navbar = () => {
+const Navbar = (props) => {
 
+    const handleSelectTimeZone = (data) => {
+        props.handleTimeZoneData(data)
+        console.log("data::::", data)
+    }
     return (
         <>
             <div className=" navbar-section-design">
@@ -17,7 +22,7 @@ const Navbar = () => {
                             Dashboard
                         </div>
                         <div>
-                            <TimeZone  />
+                            <TimeZone getTimeZone={handleSelectTimeZone} />
                         </div>
                         <div className="profile-logout-div d-flex align-items-center">
                             <div className="profile-avatar rounded-circle justify-content-center">s</div>

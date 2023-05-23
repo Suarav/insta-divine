@@ -3,10 +3,15 @@ import React, { useState } from 'react'
 
 import TimezoneSelect from 'react-timezone-select'
 
-const TimeZone = () => {
+const TimeZone = (props) => {
     const [selectedTimezone, setSelectedTimezone] = useState(
         Intl.DateTimeFormat().resolvedOptions().timeZone
     )
+    const handleSelectedTimezone = (timeZone) => {
+        setSelectedTimezone(timeZone.offset)
+        props.getTimeZone(timeZone.offset)
+        console.log("value++++++++++", timeZone.offset);
+    }
 
     return (
         <>
@@ -16,7 +21,7 @@ const TimeZone = () => {
                 <div className="select-wrapper">
                     <TimezoneSelect
                         value={selectedTimezone}
-                        onChange={setSelectedTimezone}
+                        onChange={handleSelectedTimezone}
                     />
                 </div>
                 {/* <h3>Output:</h3>

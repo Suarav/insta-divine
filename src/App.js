@@ -7,30 +7,30 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import apiService from './services/apiService';
 function App() {
- const [isAuthUser,setIsAuthUser]=useState({})
-  const authApiUser =async()=>{
+  const [isAuthUser, setIsAuthUser] = useState({})
+  const authApiUser = async () => {
     const res = await apiService.authApiUser(Cookies.get('_dul_s'))
-    if(res.success == 1){
+    if (res.success == 1) {
       setIsAuthUser(res)
       Cookies.set('api_key', res.api_key)
     }
-    else{
-      // window.location = "https://divineapi.com/"
+    else {
+      window.location = "https://divineapi.com/"
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     authApiUser()
-  },[])
+  }, [])
   return (
     <div className="">
       <Routes>
         <Route exact path="/" element={
           isAuthUser ?
-         <Profile /> 
-         :
-          <NotFound/>
-          } />
-        <Route exact path="*" element={<NotFound/>} />
+            <Profile />
+            :
+            <NotFound />
+        } />
+        <Route exact path="*" element={<NotFound />} />
       </Routes>
 
     </div>

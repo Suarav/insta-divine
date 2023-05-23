@@ -33,7 +33,6 @@ const categories = [{ name: "Personal Life", value: "personal" },
 ];
 
 
-
 const Profile = () => {
     const componentRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -73,18 +72,24 @@ const Profile = () => {
     const [isSaveModel, setIsSaveModel] = useState(false)
     const [templetName, setTempletName] = useState("");
     const [saveAsTemplateName, setSaveAsTemplateName] = useState("Save as template");
+    const [timeZoneValue, setTimeZoneValue] = useState("")
+    const [zodiacData, setZodiacData] = useState({});
 
     // add templet
     // console.log("base64String:::", base64String)
     const checkBoxClick = () => {
 
     }
+    const handleTimeZoneData = (timeZoneData) => {
+        console.log("timeZoneData::::", timeZoneData)
+        setTimeZoneValue(timeZoneData)
+    }
     const pageReloadApicall = async () => {
         let formData = new FormData();
-        // formData.append('api_key', Cookies.get('api_key'));
-        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        formData.append('api_key', Cookies.get('api_key'));
+        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
-        formData.append('timezone', "5.5");
+        formData.append('timezone', timeZoneValue);
         formData.append('sign', "Aries");
         const headers = {
             'Content-Type': 'multipart/form-data',
@@ -92,18 +97,17 @@ const Profile = () => {
         }
         const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
 
+
+        setZodiacData(res.data.data.prediction)
         setCat1(res.data.data.prediction[selectedCategories[0]])
         setCat2(res.data.data.prediction[selectedCategories[1]])
-
-
-        // const image = await htmlToImage.toPng(componentRef.current);
-        // download(image, `ARIES-${currentDate}`);
-
     }
-    useEffect(() => {
 
+
+    useEffect(() => {
         pageReloadApicall();
-    }, [])
+    }, []);
+
     const handleTemplate = async () => {
 
         const TemplateData = {
@@ -178,7 +182,12 @@ const Profile = () => {
             setSelectedCategories(selectedCategories.filter(category => category !== value))
         }
 
+
     }
+    useEffect(() => {
+        setCat1(zodiacData[selectedCategories[0]])
+        setCat2(zodiacData[selectedCategories[1]])
+    }, [selectedCategories]);
 
     const setCanvasImage = (image, canvas, crop) => {
         if (!crop || !canvas || !image) {
@@ -395,11 +404,12 @@ const Profile = () => {
 
     // download image
     const handleExportImage = async () => {
+
         let formData = new FormData();
-        // formData.append('api_key', Cookies.get('api_key'));
-        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        formData.append('api_key', Cookies.get('api_key'));
+        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
-        formData.append('timezone', "5.5");
+        formData.append('timezone', timeZoneValue);
         const zodiacSigns = [
             "Aries",
             "Taurus",
@@ -435,13 +445,15 @@ const Profile = () => {
             setZodiacName(ZodiacKey[i])
             const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
 
+
             setCat1(res.data.data.prediction[selectedCategories[0]])
             setCat2(res.data.data.prediction[selectedCategories[1]])
+
 
             const image = await htmlToImage.toPng(componentRef.current);
             download(image, `${ZodiacKey[i]}-${currentDate}`);
         }
-        setIsmobilePreview("preview-design-div")
+        // setIsmobilePreview("preview-design-div")
         document.getElementsByClassName("h-100 preview-componentRef-div")[0].style.borderRadius = "40px"
         setIsLoading(false)
     }
@@ -458,7 +470,7 @@ const Profile = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar handleTimeZoneData={handleTimeZoneData} />
             <div class="s-layout">
 
                 <Sidebar />
