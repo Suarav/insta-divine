@@ -15,7 +15,7 @@ const Navbar = (props) => {
             <div className=" navbar-section-design">
                 <div className="d-flex">
                     <div>
-                        <img src="https://dev.divineapi.com/assets/images/logo.svg" className="brand-image " />
+                        <img src="https://divineapi.com/assets/images/logo.svg" className="brand-image " />
                     </div>
                     <div className="d-flex justify-content-between w-100 align-items-center">
                         <div className="brand-title">
