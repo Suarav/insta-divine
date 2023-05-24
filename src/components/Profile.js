@@ -86,8 +86,8 @@ const Profile = () => {
     }
     const pageReloadApicall = async () => {
         let formData = new FormData();
-        formData.append('api_key', Cookies.get('api_key'));
-        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        // formData.append('api_key', Cookies.get('api_key'));
+        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
         formData.append('timezone', timeZoneValue);
         formData.append('sign', "Aries");
@@ -96,18 +96,18 @@ const Profile = () => {
             "Accept": "application/json"
         }
         const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+        if (res.data.data.status == 1) {
+            setZodiacData(res.data.data.prediction)
+            setCat1(res.data.data.prediction[selectedCategories[0]])
+            setCat2(res.data.data.prediction[selectedCategories[1]])
+            setIsLoading(false);
 
-        setZodiacData(res.data.data.prediction)
-        setCat1(res.data.data.prediction[selectedCategories[0]])
-        setCat2(res.data.data.prediction[selectedCategories[1]])
-        setIsLoading(false);
-        //     if (res.data.data.status == 1) {
 
 
-        //     }
-        //     else {
-        //         window.location = "https://divineapi.com"
-        //     }
+        }
+        else {
+            window.location = "https://dev.divineapi.com"
+        }
     }
 
 
@@ -429,8 +429,8 @@ const Profile = () => {
         }
         else {
             let formData = new FormData();
-            formData.append('api_key', Cookies.get('api_key'));
-            // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+            // formData.append('api_key', Cookies.get('api_key'));
+            formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
             formData.append('date', currentDate);
             formData.append('timezone', timeZoneValue);
             const zodiacSigns = [
@@ -467,21 +467,21 @@ const Profile = () => {
                 setZodiacName(ZodiacKey[i])
                 const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
                 // console.log("res+++++++++++++",res)
-                console.log("selectedCategories[0]]+++++++++", selectedCategories[0])
+                // console.log("selectedCategories[0]]+++++++++", selectedCategories[0])
+                // console.log("selectedCategories[1]]+++++++++", selectedCategories[1])
 
-                console.log("selectedCategories[1]]+++++++++", selectedCategories[1])
+                if (res.data.data.status == 1) {
+                    setCat1(res.data.data.prediction[selectedCategories[0]])
+                    setCat2(res.data.data.prediction[selectedCategories[1]])
+                    const image = await htmlToImage.toPng(componentRef.current);
+                    download(image, `${ZodiacKey[i]}-${currentDate}`);
 
-                setCat1(res.data.data.prediction[selectedCategories[0]])
-                setCat2(res.data.data.prediction[selectedCategories[1]])
-                const image = await htmlToImage.toPng(componentRef.current);
-                download(image, `${ZodiacKey[i]}-${currentDate}`);
 
-                // if (res.data.data.status == 1) {
 
-                // }
-                // else {
-                //     window.location = "http://dev.divineapi.com"
-                // }
+                }
+                else {
+                    window.location = "http://dev.divineapi.com"
+                }
 
 
             }
@@ -507,16 +507,14 @@ const Profile = () => {
         <>
             <Navbar handleTimeZoneData={handleTimeZoneData} />
             <div class="s-layout">
-
+                {
+                    isLoading && <div className="loader">
+                        Loading...
+                    </div>
+                }
                 <Sidebar />
                 <div className="s-layout__content">
                     <div className="section">
-                        {
-                            isLoading && <div className="loader">
-                                Loading...
-                            </div>
-                        }
-
                         <div className="profile-container">
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">

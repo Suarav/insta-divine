@@ -4,11 +4,17 @@ import React from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 import "../navbar/navbar.css"
 import TimeZone from "../Timezone/timezone";
+import Cookies from 'js-cookie';
+
+
 const Navbar = (props) => {
 
     const handleSelectTimeZone = (data) => {
         props.handleTimeZoneData(data)
-        console.log("data::::", data)
+    }
+    const handleClearCookies = () => {
+        Cookies.remove("_dul_s");
+        window.location = "http://dev.divineapi.com/dashboard"
     }
     return (
         <>
@@ -26,8 +32,8 @@ const Navbar = (props) => {
                         </div>
                         <div className="profile-logout-div d-flex align-items-center">
                             <div className="profile-avatar rounded-circle justify-content-center">s</div>
-                            <div className="Logout-section d-flex ps-4">
-                                <span className="fw-bolder text-danger">
+                            <div className="Logout-section d-flex ps-4" >
+                                <span className="fw-bolder text-danger" onClick={handleClearCookies}>
                                     <FontAwesomeIcon icon={faRightFromBracket} style={{ color: "#dc3545", }} className="pe-2" />
                                     <span className="logout-title">Logout</span>
                                 </span>

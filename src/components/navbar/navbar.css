@@ -39,3 +39,7 @@
     align-items: center;
     color: #ffffff;
 }
+
+.logout-title {
+    cursor: pointer;
+}
