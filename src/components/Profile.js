@@ -96,7 +96,7 @@ const Profile = () => {
         formData.append('api_key', Cookies.get('api_key'));
         // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
-        formData.append('timezone', "5.5");
+        formData.append('timezone', timeZoneValue);
         formData.append('sign', "Aries");
         const headers = {
             'Content-Type': 'multipart/form-data',
@@ -448,7 +448,7 @@ const Profile = () => {
             else if (dataUrl == "get_monthly_horoscope") {
                 formData.append('month', "current");
             }
-            formData.append('timezone', "5.5");
+            formData.append('timezone', timeZoneValue);
             const zodiacSigns = [
                 "Aries",
                 "Taurus",
