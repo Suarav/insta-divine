@@ -109,7 +109,10 @@ a {
 .s-sidebar__nav-link:hover {
     background: #ffffff;
     border-radius: 14px;
-    color: #f84d86;
+}
+
+.s-sidebar__nav-link:hover .icon-sidebar {
+    color: #f84d86 !important;
 }
 
 .s-sidebar__nav-link>i {
@@ -126,6 +129,10 @@ a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.s-sidebar__nav-link .icon:hover {
+    color: black !important;
 }
 
 /* Mobile First */

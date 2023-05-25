@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import '../Sidebar/sidebar.css'
 const Sidebar = () => {
-    
+
     return (
         <>
             <div className="s-layout__sidebar">
@@ -16,21 +16,22 @@ const Sidebar = () => {
                     <ul>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/dashboard">
-                                <FontAwesomeIcon className="icon" icon={faTableCells} style={{ color: "#ffffff", }} /><em>
+
+                                <FontAwesomeIcon className="icon-sidebar" icon={faTableCells} style={{ color: "#ffffff", }} /><em>
                                     Dashboard
                                 </em>
                             </Link>
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/integration">
-                                <FontAwesomeIcon icon={faNetworkWired} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faNetworkWired} style={{ color: "#ffffff", }} /><em>
                                     Integration Steps
                                 </em>
                             </Link>
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/subscriptions">
-                                <FontAwesomeIcon icon={faCreditCard} style={{ color: "#ffffff", }} />
+                                <FontAwesomeIcon className="icon-sidebar" icon={faCreditCard} style={{ color: "#ffffff", }} />
                                 <em>
                                     Your Subscriptions
                                 </em>
@@ -38,7 +39,7 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/manage-subscriptions">
-                                <FontAwesomeIcon icon={faCreditCard} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faCreditCard} style={{ color: "#ffffff", }} /><em>
 
                                     Manage Subscriptions
 
@@ -47,7 +48,7 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/website-authorization">
-                                <FontAwesomeIcon icon={faLock} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faLock} style={{ color: "#ffffff", }} /><em>
 
                                     Website Authorization
 
@@ -56,14 +57,14 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/manage-billing">
-                                <FontAwesomeIcon icon={faDollarSign} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faDollarSign} style={{ color: "#ffffff", }} /><em>
                                     Manage Billing
                                 </em>
                             </Link>
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/profile">
-                                <FontAwesomeIcon icon={faUser} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faUser} style={{ color: "#ffffff", }} /><em>
                                     Profile Details
 
                                 </em>
@@ -71,21 +72,21 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/widgets/horoscope-api">
-                                <FontAwesomeIcon icon={faBars} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faBars} style={{ color: "#ffffff", }} /><em>
                                     Widgets
                                 </em>
                             </Link>
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/wordpress-plugin">
-                                <FontAwesomeIcon icon={faPlug} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faPlug} style={{ color: "#ffffff", }} /><em>
                                     Wordpress Plugin
                                 </em>
                             </Link>
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/api-doc">
-                                <FontAwesomeIcon icon={faFileLines} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faFileLines} style={{ color: "#ffffff", }} /><em>
 
                                     API & Docs
 
@@ -94,7 +95,7 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/login">
-                                <FontAwesomeIcon icon={faRightFromBracket} style={{ color: "#ffffff" }} /><em>
+                                <FontAwesomeIcon className="icon-sidebar" icon={faRightFromBracket} style={{ color: "#ffffff" }} /><em>
                                     Logout
                                 </em>
                             </Link>
