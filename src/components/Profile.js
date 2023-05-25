@@ -103,7 +103,7 @@ const Profile = () => {
             "Accept": "application/json"
         }
         const res = await axios.post(`https://dev.divineapi.com/api/1.0/${dataUrl}.php`, formData, headers)
-        if (res.data.data.status == 1) {
+        if (res.data.success == 1) {
             setZodiacData(res.data.data.prediction)
             setCat1(res.data.data.prediction[selectedCategories[0]])
             setCat2(res.data.data.prediction[selectedCategories[1]])
@@ -338,6 +338,7 @@ const Profile = () => {
         }
     }
     useEffect(() => {
+        console.log("::::::::::::::::::::::")
         getMedia();
     }, []);
     // more baclground
@@ -448,7 +449,9 @@ const Profile = () => {
             else if (dataUrl == "get_monthly_horoscope") {
                 formData.append('month', "current");
             }
+
             formData.append('timezone', timeZoneValue);
+
             const zodiacSigns = [
                 "Aries",
                 "Taurus",
@@ -486,7 +489,7 @@ const Profile = () => {
                 // console.log("selectedCategories[0]]+++++++++", selectedCategories[0])
                 // console.log("selectedCategories[1]]+++++++++", selectedCategories[1])
 
-                if (res.data.data.status == 1) {
+                if (res.data.success == 1) {
                     if (dataUrl == "get_daily_horoscope") {
                         setCat1(res.data.data.prediction[selectedCategories[0]])
                         setCat2(res.data.data.prediction[selectedCategories[1]])
@@ -531,7 +534,7 @@ const Profile = () => {
     return (
         <>
             <Navbar />
-            <div class="s-layout">
+            <div className="s-layout">
                 {
                     isLoading && <div className="loader">
                         Loading...
@@ -543,14 +546,12 @@ const Profile = () => {
                         <div className="profile-container">
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">
-
-
                                     <div className="profile-horoscope-categories pt-5">
                                         {/* sticky */}
                                         <div className="position-sticky sticky">
                                             {/* title */}
                                             <div className="frequency-div">
-                                                <label className="frequency-title" for="time">Select Frequency:</label><br />
+                                                <label className="frequency-title" htmlFor="time">Select Frequency:</label><br />
                                                 <select className="dropdown_select" onChange={handleDropdownValue} name="time" id="time">
                                                     <option value="daily">Daily</option>
                                                     <option value="weekly">Weekly</option>
