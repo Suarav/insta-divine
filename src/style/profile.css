@@ -818,3 +818,24 @@ figure figcaption {
 .save-template-model .modal-title {
     font-size: 18px;
 }
+
+/* Dropdown Css */
+.dropdown_select {
+    width: 200px;
+    height: 34px;
+    border-radius: 4px;
+}
+
+/* frequency dropdown css */
+.frequency-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-bottom: 16px;
+}
+
+.frequency-div {
+    margin-bottom: 31px;
+}

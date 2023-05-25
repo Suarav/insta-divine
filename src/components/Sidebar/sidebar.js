@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import '../Sidebar/sidebar.css'
 const Sidebar = () => {
+    
     return (
         <>
             <div className="s-layout__sidebar">
@@ -15,7 +16,7 @@ const Sidebar = () => {
                     <ul>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/dashboard">
-                                <FontAwesomeIcon icon={faTableCells} style={{ color: "#ffffff", }} /><em>
+                                <FontAwesomeIcon className="icon" icon={faTableCells} style={{ color: "#ffffff", }} /><em>
                                     Dashboard
                                 </em>
                             </Link>
@@ -84,7 +85,7 @@ const Sidebar = () => {
                         </li>
                         <li>
                             <Link className="s-sidebar__nav-link" to="https://divineapi.com/api-doc">
-                                <FontAwesomeIcon icon={faFileLines} style={{ color: "#fcfcfc", }} /><em>
+                                <FontAwesomeIcon icon={faFileLines} style={{ color: "#ffffff", }} /><em>
 
                                     API & Docs
 

@@ -1,17 +1,28 @@
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
 import "../navbar/navbar.css"
 import TimeZone from "../Timezone/timezone";
 import Cookies from 'js-cookie';
 
 
-const Navbar = (props) => {
 
-    const handleSelectTimeZone = (data) => {
-        props.handleTimeZoneData(data)
-    }
+const Navbar = () => {
+    // const handleDropdownValue = (e) => {
+
+    //     if (e.target.value == "weekly") {
+    //         props.handleDataUrl("get_weekly_horoscope")
+    //     } else if (e.target.value == "monthly") {
+    //         props.handleDataUrl("get_monthly_horoscope")
+    //     } else {
+    //         props.handleDataUrl("get_daily_horoscope")
+    //     }
+    // }
+
+    // const handleSelectTimeZone = (data) => {
+    //     props.handleTimeZoneData(data)
+    // }
     const handleClearCookies = () => {
         Cookies.remove("_dul_s");
         window.location = "http://dev.divineapi.com/dashboard"
@@ -28,8 +39,18 @@ const Navbar = (props) => {
                             Dashboard
                         </div>
                         <div>
-                            <TimeZone getTimeZone={handleSelectTimeZone} />
+                            {/* <TimeZone getTimeZone={handleSelectTimeZone} /> */}
                         </div>
+                        {/* <div>
+                            <div >
+                                <select className="dropdown_select" onChange={handleDropdownValue} name="time" id="time">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+
+                                </select>
+                            </div>
+                        </div> */}
                         <div className="profile-logout-div d-flex align-items-center">
                             <div className="profile-avatar rounded-circle justify-content-center">s</div>
                             <div className="Logout-section d-flex ps-4" >

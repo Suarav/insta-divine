@@ -74,28 +74,35 @@ const Profile = () => {
     const [saveAsTemplateName, setSaveAsTemplateName] = useState("Save as template");
     const [timeZoneValue, setTimeZoneValue] = useState("")
     const [zodiacData, setZodiacData] = useState({});
+    const [dataUrl, setDataUrl] = useState("get_daily_horoscope")
 
-    // add templet
-    // console.log("base64String:::", base64String)
-    // const checkBoxClick = () => {
+    const handleDropdownValue = (e) => {
 
-    // }
+        if (e.target.value == "weekly") {
+            setDataUrl("get_weekly_horoscope")
+        } else if (e.target.value == "monthly") {
+            setDataUrl("get_monthly_horoscope")
+        } else {
+            setDataUrl("get_daily_horoscope")
+        }
+    }
+
+    // console.log("dataUrl")
     const handleTimeZoneData = (timeZoneData) => {
-        console.log("timeZoneData::::", timeZoneData)
         setTimeZoneValue(timeZoneData)
     }
     const pageReloadApicall = async () => {
         let formData = new FormData();
-        // formData.append('api_key', Cookies.get('api_key'));
-        formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+        formData.append('api_key', Cookies.get('api_key'));
+        // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
         formData.append('date', currentDate);
-        formData.append('timezone', timeZoneValue);
+        formData.append('timezone', "5.5");
         formData.append('sign', "Aries");
         const headers = {
             'Content-Type': 'multipart/form-data',
             "Accept": "application/json"
         }
-        const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+        const res = await axios.post(`https://dev.divineapi.com/api/1.0/${dataUrl}.php`, formData, headers)
         if (res.data.data.status == 1) {
             setZodiacData(res.data.data.prediction)
             setCat1(res.data.data.prediction[selectedCategories[0]])
@@ -429,10 +436,19 @@ const Profile = () => {
         }
         else {
             let formData = new FormData();
-            // formData.append('api_key', Cookies.get('api_key'));
-            formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
-            formData.append('date', currentDate);
-            formData.append('timezone', timeZoneValue);
+            formData.append('api_key', Cookies.get('api_key'));
+            // formData.append('api_key', "f4573fc71c731d5c362f0d7860945b88");
+            if (dataUrl == "get_daily_horoscope") {
+
+                formData.append('date', currentDate);
+            }
+            else if (dataUrl == "get_weekly_horoscope") {
+                formData.append('week', "current");
+            }
+            else if (dataUrl == "get_monthly_horoscope") {
+                formData.append('month', "current");
+            }
+            formData.append('timezone', "5.5");
             const zodiacSigns = [
                 "Aries",
                 "Taurus",
@@ -465,14 +481,23 @@ const Profile = () => {
                 // console.log("ZodiacKey", ZodiacKey[i]);
                 formData.append('sign', ZodiacKey[i]);
                 setZodiacName(ZodiacKey[i])
-                const res = await axios.post("https://dev.divineapi.com/api/1.0/get_daily_horoscope.php", formData, headers)
+                const res = await axios.post(`https://dev.divineapi.com/api/1.0/${dataUrl}.php`, formData, headers)
                 // console.log("res+++++++++++++",res)
                 // console.log("selectedCategories[0]]+++++++++", selectedCategories[0])
                 // console.log("selectedCategories[1]]+++++++++", selectedCategories[1])
 
                 if (res.data.data.status == 1) {
-                    setCat1(res.data.data.prediction[selectedCategories[0]])
-                    setCat2(res.data.data.prediction[selectedCategories[1]])
+                    if (dataUrl == "get_daily_horoscope") {
+                        setCat1(res.data.data.prediction[selectedCategories[0]])
+                        setCat2(res.data.data.prediction[selectedCategories[1]])
+                    } else if (dataUrl == "get_weekly_horoscope") {
+                        setCat1(res.data.data.weekly_horoscope[selectedCategories[0]])
+                        setCat2(res.data.data.weekly_horoscope[selectedCategories[1]])
+                    } else if (dataUrl == "get_weekly_horoscope") {
+                        setCat1(res.data.data.monthly_horoscope[selectedCategories[0]])
+                        setCat2(res.data.data.monthly_horoscope[selectedCategories[1]])
+                    }
+
                     const image = await htmlToImage.toPng(componentRef.current);
                     download(image, `${ZodiacKey[i]}-${currentDate}`);
 
@@ -505,7 +530,7 @@ const Profile = () => {
 
     return (
         <>
-            <Navbar handleTimeZoneData={handleTimeZoneData} />
+            <Navbar />
             <div class="s-layout">
                 {
                     isLoading && <div className="loader">
@@ -518,10 +543,24 @@ const Profile = () => {
                         <div className="profile-container">
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">
+
+
                                     <div className="profile-horoscope-categories pt-5">
                                         {/* sticky */}
                                         <div className="position-sticky sticky">
                                             {/* title */}
+                                            <div className="frequency-div">
+                                                <label className="frequency-title" for="time">Select Frequency:</label><br />
+                                                <select className="dropdown_select" onChange={handleDropdownValue} name="time" id="time">
+                                                    <option value="daily">Daily</option>
+                                                    <option value="weekly">Weekly</option>
+                                                    <option value="monthly">Monthly</option>
+
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <TimeZone handleTimeZoneData={handleTimeZoneData} />
+                                            </div>
                                             <label>
                                                 <div className="title pb-3">
                                                     Choose Horoscope Categories{" "}

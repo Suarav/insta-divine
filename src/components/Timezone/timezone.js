@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import "./timezone.css"
 
 import TimezoneSelect from 'react-timezone-select'
 
@@ -9,15 +10,15 @@ const TimeZone = (props) => {
     )
     const handleSelectedTimezone = (timeZone) => {
         setSelectedTimezone(timeZone.offset)
-        props.getTimeZone(timeZone.offset)
+        props.handleTimeZoneData(timeZone.offset)
         console.log("value++++++++++", timeZone.offset);
     }
 
     return (
         <>
-            <div className="App">
-                {/* <h2>react-timezone-select</h2>
-                <blockquote>Please make a selection</blockquote> */}
+            <div className="timezone-select" >
+                <p className='timezone-title'>  Please Select TimeZone</p>
+
                 <div className="select-wrapper">
                     <TimezoneSelect
                         value={selectedTimezone}
