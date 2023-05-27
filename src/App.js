@@ -6,6 +6,9 @@ import NotFound from './components/NotFound';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import apiService from './services/apiService';
+import SchedulePage from './pages/schedule';
+import ActionProfile from './pages/actionProfile';
+
 function App() {
   const [isAuthUser, setIsAuthUser] = useState({})
   const authApiUser = async () => {
@@ -30,6 +33,8 @@ function App() {
             :
             <NotFound />
         } />
+        <Route exact path="/schedule" element={<SchedulePage />} />
+        <Route exact path="/actionProfile" element={<ActionProfile />} />
         <Route exact path="*" element={<NotFound />} />
       </Routes>
 

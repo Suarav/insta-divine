@@ -1,4 +1,5 @@
 import axios from "axios";
+import SchedulePage from "../pages/schedule";
 
 class ApiService {
     BASE_API_URL = "https://insta.divineapi.com";
@@ -71,6 +72,36 @@ class ApiService {
 
         const res = await this.POST(`/admin/api/v1/get`, body, headers)
         return res.data.data[0]
+    }
+    async singleSchedulePage(body) {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            "Accept": "application/json"
+        }
+        const res = await this.POST(`/admin/api/v1/single-instgram-scheduler`, body, headers)
+        return res.data.data[0]
+    }
+    async storeInstaSchedule(body) {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        const res = await this.POST(`/admin/api/v1/store-insta-scheduler`, body, headers)
+        return res
+    }
+    async listInstaSchedule(body) {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        const res = await this.POST(`/admin/api/v1/list-insta-scheduler`, body, headers)
+        return res.data.data
+    }
+
+    async changeStatus(body) {
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        const res = await this.POST(`/admin/api/v1/change-status-instgram-scheduler`, body, headers)
+        return res
     }
 
 

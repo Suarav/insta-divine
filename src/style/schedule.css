@@ -1,0 +1,14 @@
+.schedule-table {
+    margin-left: 17.2em;
+    max-width: 75%;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.table {
+    border: 1px solid black;
+}
+
+.switch.btn {
+    width: 100%;
+}

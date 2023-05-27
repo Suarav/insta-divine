@@ -1,10 +1,13 @@
+
+import Navbar from "../components/navbar/Navbar";
+import Sidebar from "../components/Sidebar/sidebar";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import '../style/profile.css'
-import InputCheckbox from "./molecule/checkbox/inputCheckbox";
+import '../style/profile.css';
+import InputCheckbox from "../components/molecule/checkbox/inputCheckbox";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faClose, faEye, faLock } from '@fortawesome/free-solid-svg-icons'
 import $ from 'jquery';
-import Model from "./molecule/model/Model";
+import Model from "../components/molecule/model/Model";
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import Modal from 'react-bootstrap/Modal';
@@ -16,12 +19,10 @@ import moment from 'moment';
 import _default from "react-bootstrap/esm/NavDropdown";
 
 import Cookies from 'js-cookie';
-import SaveTempletModel from "./molecule/model/SaveTempletModel";
-import Sidebar from "./Sidebar/sidebar";
-import Navbar from "./navbar/Navbar";
-import TimeZone from "./Timezone/timezone";
-import { useNavigate } from "react-router-dom";
+import SaveTempletModel from "../components/molecule/model/SaveTempletModel";
 
+import TimeZone from "../components/Timezone/timezone";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const currentDate = moment().format('YYYY-MM-DD');
 
@@ -32,9 +33,8 @@ const categories = [{ name: "Personal Life", value: "personal" },
 { name: "Travel", value: "travel" },
 { name: "Luck", value: "luck" },
 ];
-
-
-const Profile = () => {
+const ActionProfile = () => {
+    const location = useLocation()
     const componentRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [crop, setCrop] = useState({
@@ -42,8 +42,9 @@ const Profile = () => {
         x: 25,
         y: 25,
         width: 50,
-        height: 50,
+        height: 70,
     })
+    const [selectedStatus, setSelectedStatus] = useState(0)
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
     const [completedCrop, setCompletedCrop] = useState(null);
@@ -72,25 +73,65 @@ const Profile = () => {
     const [selectedTemplateData, setselectedTemplateData] = useState({});
     const [isSaveModel, setIsSaveModel] = useState(false)
     const [templetName, setTempletName] = useState("");
-    const [saveAsTemplateName, setSaveAsTemplateName] = useState("Save as template");
+    const [saveAsTemplateName, setSaveAsTemplateName] = useState("Choose a template");
     const [timeZoneValue, setTimeZoneValue] = useState("")
     const [zodiacData, setZodiacData] = useState({});
     const [dataUrl, setDataUrl] = useState("get_daily_horoscope")
-
+    const [profileDataName, setProfileDataName] = useState("")
+    const [profileDataEmail, setProfileEmail] = useState("");
+    const [instaTitle, setInstaTitle] = useState("")
     const navigate = useNavigate();
 
-    const handleRadioButtonValue = (e) => {
-        console.log("e.target.value", e.target.value)
-        if (e.target.value == "weekly") {
-            setDataUrl("get_weekly_horoscope")
-        } else if (e.target.value == "monthly") {
-            setDataUrl("get_monthly_horoscope")
-        } else {
-            setDataUrl("get_daily_horoscope")
-        }
-    }
 
-    // console.log("dataUrl")
+    const singleSchedulePage = async () => {
+        const formData = new FormData();
+        formData.append('api_key', Cookies.get('api_key'));
+        formData.append('type', location.state.key);
+        const respose = await apiService.singleSchedulePage(formData);
+        setSelectedCategories(JSON.parse(respose.config).category)
+        setProfileTitle(JSON.parse(respose.config).title)
+        setBackgroungImage(JSON.parse(respose.config).background)
+        setBtnStyle(JSON.parse(respose.config).catButtonStyle)
+        setCategoryBtnColor(JSON.parse(respose.config).catButtonColor)
+        setCategoryBtnFontColor(JSON.parse(respose.config).catButtonFontColor)
+        setFontFamaily(JSON.parse(respose.config).fontStyle)
+        setFontColorCode(JSON.parse(respose.config).fontCol)
+        setProfileDataName(respose.scheduler_name)
+        setProfileEmail(respose.email)
+        setSelectedStatus(respose.status)
+        // setSaveAsTemplateName(name)
+        setIsdropDown(false)
+    }
+    useEffect(() => {
+        singleSchedulePage()
+    }, [])
+    const handleProfileSave = async () => {
+        const TemplateData = {
+            category: selectedCategories,
+            title: profileTitle,
+            background: backgroundImage,
+            style: "",
+            profileImage: base64String,
+            catButtonStyle: btnStyle,
+            catButtonColor: categoryBtnColor,
+            catButtonFontColor: categoryBtnFontColor,
+            fontStyle: fontFamaily,
+            fontColor: fontColor,
+        }
+        const dataBody = {
+            api_key: Cookies.get('api_key'),
+            scheduler_name: profileDataName,
+            type: location.state.key,
+            email: profileDataEmail,
+            status: selectedStatus,
+            config: JSON.stringify(TemplateData)
+        }
+        const data = await apiService.storeInstaSchedule(dataBody)
+        if (data.data.success) {
+            alert("Record inserted successfully")
+        }
+        console.log("data+++", data)
+    }
     const handleTimeZoneData = (timeZoneData) => {
         setTimeZoneValue(timeZoneData)
     }
@@ -184,7 +225,6 @@ const Profile = () => {
         setFontColorCode(JSON.parse(res.config).fontCol)
         setSaveAsTemplateName(name)
         setIsdropDown(false)
-
     }
 
     const handleCheckbox = (e) => {
@@ -338,7 +378,6 @@ const Profile = () => {
         }
     }
     useEffect(() => {
-        console.log("::::::::::::::::::::::")
         getMedia();
     }, []);
     // more baclground
@@ -546,56 +585,65 @@ const Profile = () => {
                         <div className="profile-container">
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">
-                                    <div className="profile-horoscope-categories pt-5">
+                                    <div className="profile-horoscope-categories pt-1">
+                                        <div className="position-sticky heading-profile">
+                                            <h4 className="text-capitalize"> {location.state?.key} insta story </h4>
+                                        </div>
                                         {/* sticky */}
-                                        <div className="position-sticky sticky">
-                                            {/* title */}
-                                            <div className="frequency-div">
-                                                <label className="frequency-title" htmlFor="time">Select Frequency:</label><br />
-
-                                                <div className="group-radio-btn d-flex justify-content-between">
-                                                    <div className="radio-button-name">
-                                                        <input type="radio" value="daily" className="mx-3" name="time" id="daily" defaultChecked onChange={handleRadioButtonValue} />
-                                                        <lable htmlFor="daily"> Daily</lable>
-                                                    </div>
-                                                    <div className="radio-button-name radio-btn-weekly-monthly">
-                                                        <input type="radio" value="weekly" className="mx-3" name="time" id="weekly" onChange={handleRadioButtonValue} />
-                                                        <lable htmlFor="weekly">Weekly</lable>
-                                                    </div>
-
-                                                    <div className="radio-button-name  radio-btn-weekly-monthly">
-                                                        <input type="radio" className="mx-3" value="monthly" name="time" id="monthly" onChange={handleRadioButtonValue} />
-                                                        <lable htmlFor="monthly">Monthly</lable>
-                                                    </div>
-
+                                        <div className="new-profile-text-field">
+                                            {/* email */}
+                                            <div className="form-group">
+                                                <label htmlFor="" className="timezone-title mb-2">Email</label>
+                                                <input type="email" className="form-control w-50 mb-4" id="" value={profileDataEmail || location.state?.email} placeholder="name@example.com" onChange={(e) => setProfileEmail(e.target.value)} />
+                                            </div>
+                                            {/* name */}
+                                            <div className="form-group">
+                                                <label htmlFor="" className="timezone-title mb-2">Scheduler Name</label>
+                                                <input type="text" className="form-control w-50 mb-4" id="" value={profileDataName || location.state?.name} placeholder="Enter name" onChange={(e) => setProfileDataName(e.target.value)} />
+                                            </div>
+                                            {/* select stuts */}
+                                            <label className=" mb-2">Status</label>
+                                            <div className="form-check d-flex w-50 justify-content-between">
+                                                <div>
+                                                    <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="1" onChange={(e) => setSelectedStatus(1)} checked={selectedStatus == 1 ? true : false} />
+                                                    <label className="form-check-label" for="exampleRadios1">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="0" onChange={(e) => setSelectedStatus(0)} checked={selectedStatus == 0 ? true : false} />
+                                                    <label className="form-check-label" for="exampleRadios2">
+                                                        Deactive
+                                                    </label>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <TimeZone handleTimeZoneData={handleTimeZoneData} />
+                                        </div>
+                                        <div>
+                                            <TimeZone handleTimeZoneData={handleTimeZoneData} />
+                                        </div>
+                                        <label className="label-categories">
+                                            <div className="title pb-3">
+                                                Choose Horoscope Categories{" "}
+                                                <span className="sub-title">(You can select only two)</span>
                                             </div>
-                                            <label>
-                                                <div className="title pb-3">
-                                                    Choose Horoscope Categories{" "}
-                                                    <span className="sub-title">(You can select only two)</span>
-                                                </div>
-                                                {/* checkbox */}
-                                                <div className="checkbox d-flex flex-wrap">
+                                            {/* checkbox */}
+                                            <div className="checkbox d-flex flex-wrap">
 
-                                                    {
-                                                        categories.map((category, index) => <div className="d-flex align-items-center pe-2" key={index}>
-                                                            <InputCheckbox
-                                                                className="categoryCheckbox"
-                                                                label={category.name}
-                                                                value={category.value}
-                                                                checkBoxType="category"
-                                                                checked={selectedCategories?.includes(category.value)}
-                                                                onChange={handleCheckbox}
-                                                            // onClick={checkBoxClick}
+                                                {
+                                                    categories.map((category, index) => <div className="d-flex align-items-center pe-2" key={index}>
+                                                        <InputCheckbox
+                                                            className="categoryCheckbox"
+                                                            label={category.name}
+                                                            value={category.value}
+                                                            checkBoxType="category"
+                                                            checked={selectedCategories?.includes(category.value)}
+                                                            onChange={handleCheckbox}
+                                                        // onClick={checkBoxClick}
 
-                                                            />
-                                                        </div>)
-                                                    }
-                                                    {/*                                             
+                                                        />
+                                                    </div>)
+                                                }
+                                                {/*                                             
                                             <div className="d-flex align-items-center pe-2">
                                                 <InputCheckbox
                                                     value="health"
@@ -649,38 +697,32 @@ const Profile = () => {
 
                                                 />
                                             </div> */}
-                                                </div>
-                                            </label>
-
-                                            {/* button group */}
-                                            <div className="buttons-group d-flex justify-content-between">
-                                                <div className="d-flex">
-                                                    <div className="position-reletive">
-                                                        <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
-                                                        // onClick={ShowSavePopup} style={{ padding: "12px 0px 12px 0px" }}
-                                                        > {saveAsTemplateName}</span>
-                                                            <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
-                                                        </button>
-
-                                                        <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
-                                                            <div className="allTemplet-list">
-                                                                <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
-                                                                {allTemplet?.map((item, index) => (
-                                                                    <div className="" key={index}>
-                                                                        <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
-                                                                    </div>
-
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <button className="export-button" onClick={handleExportImage}>Export</button>
-                                                </div>
-
-                                                <button className="schedule-button" onClick={() => navigate("/schedule")}>Schedule</button>
                                             </div>
-                                        </div>
+                                        </label>
+
+                                        {/* button group */}
+                                        {/* <div className="buttons-group">
+                                            <button className="schedule-button" onClick={handleProfileSave}>Save</button>
+                                            <div className="position-reletive">
+                                                <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span> {saveAsTemplateName}</span>
+                                                    <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
+                                                </button>
+
+                                                <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
+                                                    <div className="allTemplet-list">
+                                                        <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
+                                                        {allTemplet?.map((item, index) => (
+                                                            <div className="" key={index}>
+                                                                <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
+                                                            </div>
+
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> */}
+
 
                                         <div className="bottom-section">
                                             {/* profile */}
@@ -1137,8 +1179,30 @@ const Profile = () => {
                                 {/* {isMobilePreview ? } */}
                                 <div className={`col-lg-4 col-sm-12 col-md-12 ${isMobilePreview}`}>
 
+                                    <div className="buttons-group d-flex mt-1">
+                                        <button className="schedule-button" onClick={handleProfileSave}>Save</button>
+                                        <div className="position-reletive template-index">
+                                            <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3 "><span> {saveAsTemplateName}</span>
+                                                <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
+                                            </button>
+
+                                            <div className="save-templet-dropDown position-absolute z-index-1000" style={{ display: isDropDown ? "block" : "none" }}>
+                                                <div className="allTemplet-list">
+                                                    <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
+                                                    {allTemplet?.map((item, index) => (
+                                                        <div className="" key={index}>
+                                                            <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
+                                                        </div>
+
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div className="Mobile-section d-flex justify-content-end">
-                                        <div className="preview-wrap">
+                                        <div className="preview-wrap preview-wrap-action-profile">
                                             <div ref={componentRef} className="h-100 preview-componentRef-div" style={{ backgroundImage: `url(${backgroundImage}` }}>
                                                 {/* close button */}
                                                 <div className="preview-close-btn" onClick={handlepreview}>
@@ -1207,8 +1271,7 @@ const Profile = () => {
                     <SaveTempletModel isModel={isSaveModel} isHideModel={HideSavePopup} saveChanges={handleTemplate} getName={(e) => setTempletName(e.target.value)} />
                 </div>
             </div>
-            {/* <TimeZone /> */}
         </>
     )
 }
-export default Profile;
+export default ActionProfile;
