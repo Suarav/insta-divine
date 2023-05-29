@@ -91,11 +91,16 @@
     border-radius: 21px;
     margin-top: 3px;
     z-index: -1;
+    box-shadow: 0px 2px 6px 6px rgba(0, 0, 0, 0.3)
 }
 
 .allTemplet-name {
     cursor: pointer;
+    word-break: break-all;
+
 }
+
+
 
 .allTemplet-list {
     overflow-y: scroll;
@@ -582,7 +587,11 @@
     font-weight: 700;
     line-height: 20px;
     text-align: center;
+    word-break: break-all;
+
 }
+
+
 
 .profile-ZodiacName {
     font-size: 26px;

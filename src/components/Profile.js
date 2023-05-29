@@ -76,8 +76,25 @@ const Profile = () => {
     const [timeZoneValue, setTimeZoneValue] = useState("")
     const [zodiacData, setZodiacData] = useState({});
     const [dataUrl, setDataUrl] = useState("get_daily_horoscope")
+    const [count, setCount] = useState(0);
+    const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
+                setIsdropDown(false)
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [])
+
+
+
+
 
     const handleRadioButtonValue = (e) => {
         console.log("e.target.value", e.target.value)
@@ -149,6 +166,7 @@ const Profile = () => {
         const res = await apiService.saveInstaTemplet(dataBody)
         if (res) {
             HideSavePopup()
+            setCount(count + 1);
         }
         setselectedTemplateData(TemplateData)
         // alert(JSON.stringify(TemplateData))
@@ -169,8 +187,18 @@ const Profile = () => {
         }
         const res = await apiService.getTemplet()
         setAllTemplet(res)
-
     }
+
+    const saveCreateTemplateShow = async () => {
+        const res = await apiService.getTemplet()
+        setAllTemplet(res)
+        setIsdropDown(false)
+    }
+
+    useEffect(() => {
+        saveCreateTemplateShow()
+    }, [count]);
+
     // handleTemplete
     const handleTempleteDesign = async (id, name) => {
         const res = await apiService.getTempletData(id)
@@ -184,6 +212,8 @@ const Profile = () => {
         setFontColorCode(JSON.parse(res.config).fontCol)
         setSaveAsTemplateName(name)
         setIsdropDown(false)
+
+
 
     }
 
@@ -656,13 +686,13 @@ const Profile = () => {
                                             <div className="buttons-group d-flex justify-content-between">
                                                 <div className="d-flex">
                                                     <div className="position-reletive">
-                                                        <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
+                                                        <button ref={dropdownRef} onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3" ><span
                                                         // onClick={ShowSavePopup} style={{ padding: "12px 0px 12px 0px" }}
                                                         > {saveAsTemplateName}</span>
                                                             <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
                                                         </button>
 
-                                                        <div className="save-templet-dropDown position-absolute" style={{ display: isDropDown ? "block" : "none" }}>
+                                                        <div className="save-templet-dropDown position-absolute " style={{ display: isDropDown ? "block" : "none" }}>
                                                             <div className="allTemplet-list">
                                                                 <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
                                                                 {allTemplet?.map((item, index) => (
@@ -736,7 +766,7 @@ const Profile = () => {
                                                         </div>
                                                         <div className="profile-section-input pt-5">
                                                             <input type="text" onChange={(e) =>
-                                                                setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
+                                                                setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" maxLength={60} />
                                                         </div>
                                                     </div>
                                                 </div>
