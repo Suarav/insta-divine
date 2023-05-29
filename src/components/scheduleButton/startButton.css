@@ -1,0 +1,10 @@
+.schedule-strat-btn {
+    padding: 6px;
+    border: none;
+    border-radius: 7px;
+    background: hotpink;
+    max-width: 72px;
+    width: 100%;
+    color: white;
+    cursor: pointer;
+}

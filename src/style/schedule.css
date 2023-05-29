@@ -1,8 +1,9 @@
 .schedule-table {
-    margin-left: 17.2em;
-    max-width: 75%;
+    margin-left: 6.2em;
+    max-width: 90%;
     width: 100%;
     margin-top: 2rem;
+    cursor: pointer;
 }
 
 .table {
@@ -11,4 +12,14 @@
 
 .switch.btn {
     width: 100%;
+}
+
+.edit {
+    margin-left: 20px;
+}
+
+
+
+td {
+    vertical-align: middle;
 }

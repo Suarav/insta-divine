@@ -192,7 +192,7 @@ const Profile = () => {
     const saveCreateTemplateShow = async () => {
         const res = await apiService.getTemplet()
         setAllTemplet(res)
-        setIsdropDown(false)
+        // setIsdropDown(false)
     }
 
     useEffect(() => {
@@ -783,7 +783,7 @@ const Profile = () => {
                                                 </Modal.Header>
                                                 <Modal.Body className="pe-3">
                                                     {selectedImage &&
-                                                        (<ReactCrop crop={crop} aspect={1} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
+                                                        (<ReactCrop crop={crop} aspect={1} onChange={(c, percentCrop) => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
                                                             <img src={selectedImage} ref={imgRef} className="selctedIMage pe-3" />
                                                         </ReactCrop>)}
                                                 </Modal.Body>

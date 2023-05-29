@@ -778,7 +778,7 @@ const ActionProfile = () => {
                                                         </div>
                                                         <div className="profile-section-input pt-5">
                                                             <input type="text" onChange={(e) =>
-                                                                setProfileTitle(e.target.value)} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
+                                                                setProfileTitle(e.target.value)} value={profileTitle} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Profile Title" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1139,9 +1139,9 @@ const ActionProfile = () => {
                                                         <div className="Categorycolor-picker-box"></div>
                                                         <label className="color-picker-detail" htmlFor="CategoryColorPicker">
                                                             <div className="color-picker-label-name">Button color</div>
-                                                            <div id="CategoryColorCode">#ffffff</div>
+                                                            <div id="CategoryColorCode">{categoryBtnFontColor}</div>
                                                         </label>
-                                                        <input type="color" onChange={(e) => setCategoryBtnFontColor(e.target.value)} className="color-input-feild" defaultValue="#ffffff" id="CategoryColorPicker" />
+                                                        <input type="color" onChange={(e) => setCategoryBtnFontColor(e.target.value)} className="color-input-feild" value={categoryBtnFontColor} id="CategoryColorPicker" />
                                                     </div>
                                                 </div>
                                             </div>

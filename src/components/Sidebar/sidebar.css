@@ -77,7 +77,7 @@ a {
 
 .s-sidebar__nav ul {
     position: absolute;
-    top: 4em;
+    /* top: 4em; */
     left: 0;
     margin: 0;
     padding: 0;
@@ -170,13 +170,13 @@ a {
     color: black;
 }
 
-@media (min-width: 68em) {
+/* @media (min-width: 68em) {
     .s-layout__content {
         margin-left: 16em;
-    }
+    } */
 
-    /* Sidebar */
-    .s-sidebar__trigger {
+/* Sidebar */
+/* .s-sidebar__trigger {
         display: none
     }
 
@@ -187,7 +187,7 @@ a {
     .s-sidebar__nav ul {
         top: 1.3em;
     }
-}
+} */
 
 @media (max-width:680px) {
     .s-sidebar__nav {

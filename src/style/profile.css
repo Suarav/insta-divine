@@ -203,7 +203,7 @@
 }
 
 .bottom-section {
-    border-right: 1.5px solid #d9d9d9;
+    /* border-right: 1.5px solid #d9d9d9; */
     padding-right: 95px;
     padding-bottom: 30px;
 }
