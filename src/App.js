@@ -11,11 +11,14 @@ import ActionProfile from './pages/actionProfile';
 
 function App() {
   const [isAuthUser, setIsAuthUser] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
   const authApiUser = async () => {
+
     const res = await apiService.authApiUser(Cookies.get('_dul_s'))
     if (res.success == 1) {
       setIsAuthUser(res)
       Cookies.set('api_key', res.api_key)
+      setIsLoading(false)
     }
     else {
       window.location = "https://dev.divineapi.com/"
@@ -25,7 +28,13 @@ function App() {
     authApiUser()
   }, [])
   return (
+
     <div className="">
+      {
+        isLoading && <div className="loader">
+          Loading...
+        </div>
+      }
       <Routes>
         <Route exact path="/" element={
           isAuthUser ?

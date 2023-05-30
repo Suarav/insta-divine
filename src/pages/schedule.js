@@ -79,17 +79,19 @@ const SchedulePage = () => {
                             <td>{Object.keys(dailyData).length > 0 ? dailyData.scheduler_name : "-"}</td>
                             <td>Daily</td>
                             <td>{Object.keys(dailyData).length > 0 ? dailyData.email : "-"}</td>
-                            <td><BootstrapSwitchButton
-                                checked={Object.keys(dailyData).length > 0 && (dailyData.status == 1) ? true : false}
-                                disabled={Object.keys(dailyData).length > 0 ? true : false}
-                                onlabel='Active'
-                                offlabel='Deactive'
-                                offstyle="danger"
-                                onstyle="success"
-                                onChange={(checked: boolean) => {
-                                    changeStatus(checked, "daily")
-                                }}
-                            />
+                            <td>
+                                {Object.keys(dailyData).length > 0 ?
+                                    <BootstrapSwitchButton
+                                        checked={Object.keys(dailyData).length > 0 && (dailyData.status == 1) ? true : false}
+                                        onlabel='Active'
+                                        offlabel='Deactive'
+                                        offstyle="danger"
+                                        onstyle="success"
+                                        data-toggle="toggle" data-style="ios"
+                                        onChange={(checked: boolean) => {
+                                            changeStatus(checked, "daily")
+                                        }}
+                                    /> : "-"}
                             </td>
                             <td><span className="edit" onClick={() => handleAction("daily", dailyData.scheduler_name, dailyData.email)}>{Object.keys(dailyData).length > 0 ?
                                 "Edit" :
@@ -102,17 +104,19 @@ const SchedulePage = () => {
                             <td>{Object.keys(weeklyData).length > 0 ? weeklyData.scheduler_name : "-"}</td>
                             <td>Weekly</td>
                             <td>{Object.keys(weeklyData).length > 0 ? weeklyData.email : "-"}</td>
-                            <td><BootstrapSwitchButton
-                                checked={Object.keys(weeklyData).length > 0 && (weeklyData.status == 1) ? true : false}
-                                disabled={Object.keys(weeklyData).length > 0 ? true : false}
-                                onlabel='Active'
-                                offlabel='Deactive'
-                                offstyle="danger"
-                                onstyle="success"
-                                onChange={(checked: boolean) => {
-                                    changeStatus(checked, "weekly")
-                                }}
-                            /></td>
+                            <td>
+                                {Object.keys(weeklyData).length > 0 ?
+                                    <BootstrapSwitchButton
+                                        checked={Object.keys(weeklyData).length > 0 && (weeklyData.status == 1) ? true : false}
+                                        onlabel='Active'
+                                        offlabel='Deactive'
+                                        offstyle="danger"
+                                        onstyle="success"
+                                        data-toggle="toggle" data-style="ios"
+                                        onChange={(checked: boolean) => {
+                                            changeStatus(checked, "weekly")
+                                        }}
+                                    /> : "-"} </td>
                             <td><span onClick={() => handleAction("weekly", weeklyData.scheduler_name, weeklyData.email)}>{Object.keys(weeklyData).length > 0 ?
                                 "Edit" :
                                 <ScheduleStartButton />
@@ -123,17 +127,20 @@ const SchedulePage = () => {
                             <td>{Object.keys(monthlyData).length > 0 ? monthlyData.scheduler_name : "-"}</td>
                             <td>Monthly</td>
                             <td>{Object.keys(monthlyData).length > 0 ? monthlyData.email : "-"}</td>
-                            <td><BootstrapSwitchButton
-                                checked={Object.keys(monthlyData).length > 0 && (monthlyData.status == 1) ? true : false}
-                                disabled={Object.keys(monthlyData).length > 0 ? true : false}
-                                onlabel='Active'
-                                offlabel='Deactive'
-                                offstyle="danger"
-                                onstyle="success"
-                                onChange={(checked: boolean) => {
-                                    changeStatus(checked, "monthly")
-                                }}
-                            /></td>
+                            <td>
+                                {Object.keys(monthlyData).length > 0 ?
+                                    <BootstrapSwitchButton
+                                        checked={Object.keys(monthlyData).length > 0 && (monthlyData.status == 1) ? true : false}
+
+                                        onlabel='Active'
+                                        offlabel='Deactive'
+                                        offstyle="danger"
+                                        onstyle="success"
+                                        data-toggle="toggle" data-style="ios"
+                                        onChange={(checked: boolean) => {
+                                            changeStatus(checked, "monthly")
+                                        }}
+                                    /> : "-"}</td>
                             <td><span className="edit" onClick={() => handleAction("monthly", monthlyData.scheduler_name, monthlyData.email)}>
                                 {Object.keys(monthlyData).length > 0 ?
                                     "Edit" :

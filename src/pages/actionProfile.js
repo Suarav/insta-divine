@@ -740,17 +740,13 @@ const ActionProfile = () => {
                                                             >
                                                                 <input type="file" name="file" className="avatar-upload" onChange={handleImageChange} accept="image/*" />
                                                                 <div className="upload-image-icon">
-                                                                    <img src="/fileupload.svg" className="camera-img" />
+                                                                    {(selectedImage == "" || selectedImage == null) ?
+                                                                        <img src="/fileupload.svg" className="camera-img" /> : ""}
                                                                 </div>
+
                                                                 <div className="" style={{ width: "130px", height: "130px" }}>
                                                                     {selectedImage != "" ?
-                                                                        // <img
-                                                                        //     src={selectedImage}
-                                                                        //     className="avatar-uploaded-img"
-                                                                        //     width="130px"
-                                                                        //     height="130px"
-                                                                        //     style={{ display: "block" }}
-                                                                        // />
+
                                                                         <canvas
                                                                             ref={previewCanvasRef}
                                                                             className="avatar-uploaded-img"
