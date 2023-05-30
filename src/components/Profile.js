@@ -219,7 +219,7 @@ const Profile = () => {
 
     const handleCheckbox = (e) => {
         const { value, checked } = e.target;
-        console.log(value, checked);
+        // console.log(value, checked);
 
         if (checked) {
             if (selectedCategories.length === 2) {

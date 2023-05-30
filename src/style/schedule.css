@@ -11,7 +11,12 @@
 }
 
 .switch.btn {
-    width: 100%;
+    /* width: 100%; */
+    border-radius: 1.375rem !important;
+}
+
+.btn-light {
+    border-radius: 20px !important;
 }
 
 .edit {

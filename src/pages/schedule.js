@@ -83,8 +83,8 @@ const SchedulePage = () => {
                                 {Object.keys(dailyData).length > 0 ?
                                     <BootstrapSwitchButton
                                         checked={Object.keys(dailyData).length > 0 && (dailyData.status == 1) ? true : false}
-                                        onlabel='Active'
-                                        offlabel='Deactive'
+                                        onlabel='On'
+                                        offlabel='Off'
                                         offstyle="danger"
                                         onstyle="success"
                                         data-toggle="toggle" data-style="ios"
@@ -108,8 +108,8 @@ const SchedulePage = () => {
                                 {Object.keys(weeklyData).length > 0 ?
                                     <BootstrapSwitchButton
                                         checked={Object.keys(weeklyData).length > 0 && (weeklyData.status == 1) ? true : false}
-                                        onlabel='Active'
-                                        offlabel='Deactive'
+                                        onlabel='On'
+                                        offlabel='Off'
                                         offstyle="danger"
                                         onstyle="success"
                                         data-toggle="toggle" data-style="ios"
@@ -132,8 +132,8 @@ const SchedulePage = () => {
                                     <BootstrapSwitchButton
                                         checked={Object.keys(monthlyData).length > 0 && (monthlyData.status == 1) ? true : false}
 
-                                        onlabel='Active'
-                                        offlabel='Deactive'
+                                        onlabel='On'
+                                        offlabel='Off'
                                         offstyle="danger"
                                         onstyle="success"
                                         data-toggle="toggle" data-style="ios"
