@@ -2,7 +2,7 @@ import axios from "axios";
 import SchedulePage from "../pages/schedule";
 
 class ApiService {
-    BASE_API_URL = "https://insta.divineapi.com";
+    BASE_API_URL = "https://insta-bk.divineapi.com";
     reqQueue = {};
     constructor() { }
     async GET(path, h = {}) {
@@ -36,7 +36,7 @@ class ApiService {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/auth-api-user`, body, headers)
+        const res = await this.POST(`/api/v1/auth-api-user`, body, headers)
         return res.data
     }
 
@@ -44,7 +44,7 @@ class ApiService {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.GET(`/admin/api/v1/getMedia`, {}, headers)
+        const res = await this.GET(`/api/v1/getMedia`, {}, headers)
         return res.data.data
     }
 
@@ -52,14 +52,14 @@ class ApiService {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/store-insta-saved-template`, body, headers)
+        const res = await this.POST(`/api/v1/store-insta-saved-template`, body, headers)
         return res.data
     }
     async getTemplet() {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.GET(`/admin/api/v1/list`, {}, headers)
+        const res = await this.GET(`/api/v1/list`, {}, headers)
         return res.data.data
     }
     async getTempletData(data) {
@@ -70,7 +70,7 @@ class ApiService {
             'Content-Type': 'multipart/form-data',
         }
 
-        const res = await this.POST(`/admin/api/v1/get`, body, headers)
+        const res = await this.POST(`/api/v1/get`, body, headers)
         return res.data.data[0]
     }
     async singleSchedulePage(body) {
@@ -78,21 +78,21 @@ class ApiService {
             'Content-Type': 'multipart/form-data',
             "Accept": "application/json"
         }
-        const res = await this.POST(`/admin/api/v1/single-instgram-scheduler`, body, headers)
+        const res = await this.POST(`/api/v1/single-instgram-scheduler`, body, headers)
         return res.data.data[0]
     }
     async storeInstaSchedule(body) {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/store-insta-scheduler`, body, headers)
+        const res = await this.POST(`/api/v1/store-insta-scheduler`, body, headers)
         return res
     }
     async listInstaSchedule(body) {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/list-insta-scheduler`, body, headers)
+        const res = await this.POST(`/api/v1/list-insta-scheduler`, body, headers)
         return res.data.data
     }
 
@@ -100,7 +100,7 @@ class ApiService {
         const headers = {
             'Content-Type': 'multipart/form-data',
         }
-        const res = await this.POST(`/admin/api/v1/change-status-instgram-scheduler`, body, headers)
+        const res = await this.POST(`/api/v1/change-status-instgram-scheduler`, body, headers)
         return res
     }
 
