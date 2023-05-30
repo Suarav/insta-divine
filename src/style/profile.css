@@ -677,6 +677,8 @@
     cursor: pointer;
 }
 
+
+
 /* media */
 @media screen and (max-width:600px) {
     .Background-inner-description .checkbox {
@@ -820,6 +822,7 @@ figure figcaption {
     .preview-wrap {
         max-width: 296px;
         height: 581px;
+        width: 100%;
     }
 
 }

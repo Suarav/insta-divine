@@ -792,7 +792,7 @@ const ActionProfile = () => {
                                                 <Modal.Body className="pe-3">
                                                     {selectedImage &&
                                                         (<ReactCrop crop={crop} aspect={1} onChange={c => setCrop(c)} onComplete={(c) => setCompletedCrop(c)} locked={true}>
-                                                            <img src={selectedImage} ref={imgRef} className="selctedIMage pe-3" />
+                                                            <img src={selectedImage} ref={imgRef} className="selctedIMage" />
                                                         </ReactCrop>)}
                                                 </Modal.Body>
                                                 <Modal.Footer>

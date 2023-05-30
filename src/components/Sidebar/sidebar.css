@@ -115,6 +115,10 @@ a {
     color: #f84d86 !important;
 }
 
+.s-sidebar__nav-link:hover .insta-icon-fill {
+    fill: #f84d86 !important;
+}
+
 .s-sidebar__nav-link>i {
     position: absolute;
     top: 0;
