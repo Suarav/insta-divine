@@ -80,7 +80,31 @@ const ActionProfile = () => {
     const [profileDataName, setProfileDataName] = useState("")
     const [profileDataEmail, setProfileEmail] = useState("");
     const [instaTitle, setInstaTitle] = useState("")
+    const [count, setCount] = useState(0);
+    const dropdownRef = useRef(null);
     const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
+    //             setIsdropDown(false)
+    //         }
+    //     };
+    //     document.addEventListener('mousedown', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, [])
+
+    // const saveCreateTemplateShow = async () => {
+    //     const res = await apiService.getTemplet()
+    //     setAllTemplet(res)
+    //     // setIsdropDown(false)
+    // }
+
+    // useEffect(() => {
+    //     saveCreateTemplateShow()
+    // }, [count]);
 
 
     const singleSchedulePage = async () => {
@@ -586,7 +610,7 @@ const ActionProfile = () => {
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">
                                     <div className="profile-horoscope-categories pt-1">
-                                        <div className="position-sticky heading-profile">
+                                        <div className="position-sticky">
                                             <h4 className="text-capitalize"> {location.state?.key} insta story </h4>
                                         </div>
                                         {/* sticky */}
@@ -621,7 +645,7 @@ const ActionProfile = () => {
                                         <div>
                                             <TimeZone handleTimeZoneData={handleTimeZoneData} />
                                         </div>
-                                        <label className="label-categories">
+                                        <label className="label-categories-action-profile">
                                             <div className="title pb-3">
                                                 Choose Horoscope Categories{" "}
                                                 <span className="sub-title">(You can select only two)</span>
@@ -1158,7 +1182,7 @@ const ActionProfile = () => {
                                                     <div className="d-flex align-items-center">
                                                         <div className="Fontcolor-picker-box"></div>
                                                         <label className="color-picker-detail" htmlFor="FontColorPicker">
-                                                            <div className="color-picker-label-name">Button color</div>
+                                                            <div className="color-picker-label-name">Font color</div>
                                                             <div id="FontColorCode">#000000</div>
                                                         </label>
                                                         <input type="color" onChange={(e) => setFontColorCode(e.target.value)} className="color-input-feild" defaultValue="#000000" id="FontColorPicker" />
@@ -1175,16 +1199,16 @@ const ActionProfile = () => {
                                 {/* {isMobilePreview ? } */}
                                 <div className={`col-lg-4 col-sm-12 col-md-12 ${isMobilePreview}`}>
 
-                                    <div className="buttons-group d-flex mt-1">
+                                    <div className="buttons-group action-profile-button-group d-flex mt-1 ms-5">
                                         <button className="schedule-button" onClick={handleProfileSave}>Save</button>
                                         <div className="position-reletive template-index">
-                                            <button onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3 "><span> {saveAsTemplateName}</span>
+                                            <button ref={dropdownRef} onClick={handleSaveTempleteDropDown} className="save-as-template-button me-3 "><span> {saveAsTemplateName}</span>
                                                 <span className="ps-2" ><FontAwesomeIcon icon={faChevronDown} style={{ rotate: isDropDown && "180deg" }} /></span>
                                             </button>
 
                                             <div className="save-templet-dropDown position-absolute z-index-1000" style={{ display: isDropDown ? "block" : "none" }}>
                                                 <div className="allTemplet-list">
-                                                    <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div>
+                                                    {/* <div className="pb-2 fw-bold" onClick={ShowSavePopup} style={{ cursor: "pointer" }}>+ Create template</div> */}
                                                     {allTemplet?.map((item, index) => (
                                                         <div className="" key={index}>
                                                             <div className="p-1 allTemplet-name" onClick={() => handleTempleteDesign(item.id, item.name)}>{item.name}</div>
@@ -1206,18 +1230,19 @@ const ActionProfile = () => {
                                                 </div>
                                                 <div className="Mobile-preview-scroll">
                                                     {/* profile-image */}
-                                                    <div className="mobile-profile-circle">
-                                                        {base64String != "" ?
+                                                    {base64String != "" ?
+                                                        <div className="mobile-profile-circle">
+
                                                             <img src={base64String}
                                                                 alt="Converted to base64"
                                                                 className="mobile-profile-img"
                                                                 width="80px"
                                                                 height="80px"
-                                                            /> : ""}
-                                                        {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
+                                                            /> :
+                                                            {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
                                             a
                                         </p> */}
-                                                    </div>
+                                                        </div> : ""}
                                                     <div className="profile-useName mt-1">{profileTitle}</div>
                                                     <div className="profile-ZodiacName  d-flex align-items-center justify-content-center my-3">
                                                         <img src={zodiacImage} width="40px" height="40px" />

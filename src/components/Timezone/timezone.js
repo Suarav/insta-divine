@@ -16,7 +16,7 @@ const TimeZone = (props) => {
 
     return (
         <>
-            <div className="timezone-select" >
+            <div className="timezone-select timezon-select-action-profile" >
                 <p className='timezone-title'>  Please Select TimeZone</p>
 
                 <div className="select-wrapper">

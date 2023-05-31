@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     background-color: black;
-    z-index: 9;
+    z-index: 1050;
     color: #fff;
 }
 
@@ -260,14 +260,11 @@
     right: 0.45rem;
 }
 
-.sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    padding-top: 24px;
-    padding-bottom: 24px;
+.categories-scroll {
+    padding-top: 20px;
+    padding-bottom: 50px;
     background-color: #efefef;
-    z-index: 1;
+
 }
 
 .Zodiac-Style-div {
@@ -850,7 +847,7 @@ figure figcaption {
 }
 
 .frequency-div {
-    margin-bottom: 31px;
+    margin-bottom: 44px;
 }
 
 .group-radio-btn {
@@ -889,14 +886,23 @@ figure figcaption {
     margin-bottom: 24px;
 }
 
-.heading-profile {
+/* .heading-profile {
     position: -webkit-sticky;
     position: sticky;
     top: 0%;
-}
+} */
 
 .template-index {
     z-index: 3;
+}
+
+.label-categories-action-profile {
+    padding-bottom: 55px;
+}
+
+.action-profile-button-group {
+    position: fixed;
+    z-index: 1000;
 }
 
 /* .radio-button-name {

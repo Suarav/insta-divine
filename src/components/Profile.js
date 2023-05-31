@@ -80,17 +80,17 @@ const Profile = () => {
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
-                setIsdropDown(false)
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [])
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (!dropdownRef.current || !dropdownRef.current.contains(event.target)) {
+    //             setIsdropDown(false)
+    //         }
+    //     };
+    //     document.addEventListener('mousedown', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, [])
 
 
 
@@ -189,19 +189,21 @@ const Profile = () => {
         setAllTemplet(res)
     }
 
-    const saveCreateTemplateShow = async () => {
-        const res = await apiService.getTemplet()
-        setAllTemplet(res)
-        // setIsdropDown(false)
-    }
+    // const saveCreateTemplateShow = async () => {
+    //     const res = await apiService.getTemplet()
+    //     setAllTemplet(res)
 
-    useEffect(() => {
-        saveCreateTemplateShow()
-    }, [count]);
+    // }
+
+    // useEffect(() => {
+    //     saveCreateTemplateShow();
+    // }, [count]);
 
     // handleTemplete
     const handleTempleteDesign = async (id, name) => {
+        console.log(":::::::::::::::::::")
         const res = await apiService.getTempletData(id)
+        console.log("res::::", res)
         setSelectedCategories(JSON.parse(res.config).category)
         setProfileTitle(JSON.parse(res.config).title)
         setBackgroungImage(JSON.parse(res.config).background)
@@ -420,7 +422,7 @@ const Profile = () => {
         setBtnStyle(e.target.value);
     }
     const handleButtonStylesheet = () => {
-        if (btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded") {
+        if (btnStyle == "square-fill" || btnStyle == "square-rounded" || btnStyle == "square-full-rounded" || btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow" || btnStyle == "square-hardShadow" || btnStyle == "square-rounded-hardShadow" || btnStyle == "square-full-rounded-hardShadow") {
             return categoryBtnColor
         }
         else {
@@ -429,7 +431,7 @@ const Profile = () => {
     }
     const handleButtonOutLines = () => {
         if (btnStyle == "square-border" || btnStyle == "square-rounded-border" || btnStyle == "square-full-rounded-border" || btnStyle == "square-hardShadow" || btnStyle == "square-rounded-hardShadow" || btnStyle == "square-full-rounded-hardShadow" || btnStyle == "square-SoftShadow" || btnStyle == "square-rounded-SoftShadow" || btnStyle == "square-full-rounded-SoftShadow") {
-            return "1px solid black"
+            return "0px solid"
         } else {
             return "0px solid"
         }
@@ -577,10 +579,34 @@ const Profile = () => {
                             <div className="row profile-left-container">
                                 <div className="col-lg-8 col-md-12 col-sm-12">
                                     <div className="profile-horoscope-categories pt-5">
+                                        <div className="frequency-div">
+                                            <label className="frequency-title" htmlFor="time">Select Frequency:</label><br />
+
+                                            <div className="group-radio-btn d-flex justify-content-between">
+                                                <div className="radio-button-name">
+                                                    <input type="radio" value="daily" className="mx-3" name="time" id="daily" defaultChecked onChange={handleRadioButtonValue} />
+                                                    <lable htmlFor="daily"> Daily</lable>
+                                                </div>
+                                                <div className="radio-button-name radio-btn-weekly-monthly">
+                                                    <input type="radio" value="weekly" className="mx-3" name="time" id="weekly" onChange={handleRadioButtonValue} />
+                                                    <lable htmlFor="weekly">Weekly</lable>
+                                                </div>
+
+                                                <div className="radio-button-name  radio-btn-weekly-monthly">
+                                                    <input type="radio" className="mx-3" value="monthly" name="time" id="monthly" onChange={handleRadioButtonValue} />
+                                                    <lable htmlFor="monthly">Monthly</lable>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <TimeZone handleTimeZoneData={handleTimeZoneData} />
+                                        </div>
+
                                         {/* sticky */}
-                                        <div className="position-sticky sticky">
+                                        <div className="categories-scroll">
                                             {/* title */}
-                                            <div className="frequency-div">
+                                            {/* <div className="frequency-div">
                                                 <label className="frequency-title" htmlFor="time">Select Frequency:</label><br />
 
                                                 <div className="group-radio-btn d-flex justify-content-between">
@@ -602,7 +628,7 @@ const Profile = () => {
                                             </div>
                                             <div>
                                                 <TimeZone handleTimeZoneData={handleTimeZoneData} />
-                                            </div>
+                                            </div> */}
                                             <label>
                                                 <div className="title pb-3">
                                                     Choose Horoscope Categories{" "}
@@ -1151,7 +1177,7 @@ const Profile = () => {
                                                     <div className="d-flex align-items-center">
                                                         <div className="Fontcolor-picker-box"></div>
                                                         <label className="color-picker-detail" htmlFor="FontColorPicker">
-                                                            <div className="color-picker-label-name">Button color</div>
+                                                            <div className="color-picker-label-name">Font color</div>
                                                             <div id="FontColorCode">#000000</div>
                                                         </label>
                                                         <input type="color" onChange={(e) => setFontColorCode(e.target.value)} className="color-input-feild" defaultValue="#000000" id="FontColorPicker" />
@@ -1177,18 +1203,19 @@ const Profile = () => {
                                                 </div>
                                                 <div className="Mobile-preview-scroll">
                                                     {/* profile-image */}
-                                                    <div className="mobile-profile-circle">
-                                                        {base64String != "" ?
+                                                    {base64String != "" ?
+                                                        <div className="mobile-profile-circle">
+
                                                             <img src={base64String}
                                                                 alt="Converted to base64"
                                                                 className="mobile-profile-img"
                                                                 width="80px"
                                                                 height="80px"
-                                                            /> : ""}
-                                                        {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
+                                                            /> :
+                                                            {/* <p className="useName-profile-letter d-flex align-items-center justify-content-center h-100">
                                             a
                                         </p> */}
-                                                    </div>
+                                                        </div> : ""}
                                                     <div className="profile-useName mt-1">{profileTitle}</div>
                                                     <div className="profile-ZodiacName  d-flex align-items-center justify-content-center my-3">
                                                         <img src={zodiacImage} width="40px" height="40px" />
